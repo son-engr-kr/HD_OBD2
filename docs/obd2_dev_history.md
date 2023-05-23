@@ -121,7 +121,11 @@ message = Message(id=0x1234ABCD, data=b"adafruit", extended=True)
 </details>
 
 ### 현대 OBD-2 PID List는 어디서?
--  https://gsw.hyundai.com (일반인 가입 가능) - 아직 PID list 찾지는 못함
+-  https://gsw.hyundai.com (일반인 가입 가능) - 아직 PID list 찾지는 못함<br>
+- PID는 OBD-II 에서 정의되지 않고, SAE J1979에서 정의되엇다.<br>
+- 현대자동차와 다른 자동차 제조업체들은 OBD2 (On-Board Diagnostics 2) 시스템을 구현할 때 SAE J1979 표준을 따른다. (SAE J1979는 OBD2 시스템에서 사용되는 PID (Parameter ID) 값, 데이터 형식, 프로토콜 등을 정의한 표준입니다.)
+따라서 현대자동차는 일반적으로 SAE J1979 표준을 준수하여 OBD2 시스템을 구현하고, PID 값 및 데이터 형식을 표준에 맞게 사용한다. 그러나 각 제조업체는 SAE J1979 표준을 기반으로 하되, 추가적인 제조사 특정 PID 값이나 확장된 기능을 제공할 수도 있습니다.
+
 
 
 <br><br>
