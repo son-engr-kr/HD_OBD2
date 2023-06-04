@@ -1,3 +1,8 @@
+## 아두이노 CAN OBD Library 설정
+https://github.com/coryjfowler/MCP_CAN_lib
+
+아두이노 IDE에서 라이브러리(mcp_can)설치
+
 ## I2C통신과 SPI통신 차이
  I2C통신은 한 사람이 데이터를 보낼 때 다른 한 사람은 받고만 있어야 하는 무전기와 같은 통신 방식이고 SPI통신은 한 사람이 데이터를 보내면서 동시에 데이터를 받을 수 있는 전화와 같은 방식
 
@@ -150,7 +155,7 @@ void loop() {
 -전처리문에서 우리가 사용하는 아두이노 우노는 CS-PIN이 9번이므로 5에서 9로 수정해야됨
 -아두이노에서 can통신할때 baud rate 250000를 쓰는 이유 : 
 표준 Baud Rate 값: 250000은 CAN 통신의 표준 Baud Rate 값 중 하나로 정의되어 있습니다. CAN 프로토콜 표준에서는 250000 Baud를 사용
--rtr(Remote transmission request) : 원격 전송 요청
+-rtr(Remote transmission request) : 원격 전송 요청 0이면 데이터 프레임 1이면 원격 요청 프레임
 
 ```
 </details>

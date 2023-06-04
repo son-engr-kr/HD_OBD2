@@ -1,0 +1,6 @@
+{
+    "sketch": "obd2_project.ino",
+    "board": "arduino:avr:uno",
+    "port": "COM3",
+    "output": ".\\build"
+}
