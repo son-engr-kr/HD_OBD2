@@ -1,3 +1,5 @@
+#include <Arduino.h>
+#line 1 "C:\\HD_OBD2\\HD_OBD2\\Arduino_project\\obd2_project\\obd2_project.ino"
 // Service 01 PIDs (more detail: https://en.wikipedia.org/wiki/OBD-II_PIDs)
 // 설정 참고 https://ttuk-ttak.tistory.com/31
 #define PID_ENGINE_LOAD 0x04
@@ -66,7 +68,12 @@ long unsigned int rxId;
 unsigned char len = 0;
 unsigned char rxBuf[8];
 char msgString[128];                        // Array to store serial string
-void RequestStoredDTC()
+#line 69 "C:\\HD_OBD2\\HD_OBD2\\Arduino_project\\obd2_project\\obd2_project.ino"
+void SendStoredDTC();
+#line 83 "C:\\HD_OBD2\\HD_OBD2\\Arduino_project\\obd2_project\\obd2_project.ino"
+void ReceiveStoredDTC();
+#line 69 "C:\\HD_OBD2\\HD_OBD2\\Arduino_project\\obd2_project\\obd2_project.ino"
+void SendStoredDTC()
 {
   unsigned char tmp[8] = {0x02, 0x03, 0x01, 0, 0, 0, 0, 0};
 
@@ -82,8 +89,7 @@ void RequestStoredDTC()
 }
 void ReceiveStoredDTC()
 {
-  if (!digitalRead(CAN0_INT)) 
-  {                      // If CAN0_INT pin is low, read receive buffer
+  if (!digitalRead(CAN0_INT)) {                      // If CAN0_INT pin is low, read receive buffer
     CAN0.readMsgBuf(&rxId, &len, rxBuf);      // Read data: len = data length, buf = data byte(s)
 
     sprintf(msgString, "Standard ID: 0x%.3lX, DLC: %1d, Data: ", rxId, len);
@@ -96,10 +102,10 @@ void ReceiveStoredDTC()
     Serial.println("");
 
     switch (rxBuf[3]>>6& 0x3){
-      uint8_t secondCode = (rxBuf[3]>>4) & 0x3;
-      uint8_t thirdCode = (rxBuf[3]) & 0xF;
-      uint8_t fourthCode = (rxBuf[4]>>4) & 0xF;
-      uint8_t fifthCode =  (rxBuf[4]) & 0xF;
+      uint2_t secondCode = (rxBuf[3]>>4) & 0x3;
+      uint4_t thirdCode = (rxBuf[3]) & 0xF;
+      uint4_t fourthCode = (rxBuf[4]>>4) & 0xF;
+      uint4_t fifthCode =  (rxBuf[4]) & 0xF;
       case 0x00:
         Serial.print("DTC code is : P");
         Serial.print(secondCode, DEC); //DTC에 각 자리수마다 9를 넘어가는 수가 없어서 10진법으로 해도 상관없을듯.
@@ -127,14 +133,14 @@ void ReceiveStoredDTC()
         Serial.print(thirdCode, DEC); 
         Serial.print(fourthCode, DEC);
         Serial.println(fifthCode, DEC);
-        break;}
+        break;
 
-          // 진단 코드가 두개일때 
+// 진단 코드가 두개일때 
     switch (rxBuf[5]>>6& 0x3){
-      uint8_t secondCode = (rxBuf[5]>>4) & 0x3;
-      uint8_t thirdCode = (rxBuf[5]) & 0xF;
-      uint8_t fourthCode = (rxBuf[6]>>4) & 0xF;
-      uint8_t fifthCode =  (rxBuf[6]) & 0xF;
+      uint2_t secondCode = (rxBuf[5]>>4) & 0x3;
+      uint4_t thirdCode = (rxBuf[5]) & 0xF;
+      uint4_t fourthCode = (rxBuf[6]>>4) & 0xF;
+      uint4_t fifthCode =  (rxBuf[6]) & 0xF;
       case 0x00:
         Serial.print("DTC code is : P");
         Serial.print(secondCode, DEC); 
@@ -162,12 +168,11 @@ void ReceiveStoredDTC()
         Serial.print(thirdCode, DEC); 
         Serial.print(fourthCode, DEC);
         Serial.println(fifthCode, DEC);
-        break;}
+        break;
 
     }
+
 }
-
-
 void sendPID(unsigned char __pid)
 {
   unsigned char tmp[8] = {0x02, 0x01, __pid, 0, 0, 0, 0, 0};
@@ -179,10 +184,7 @@ void sendPID(unsigned char __pid)
     Serial.println(__pid, HEX);
   }
   else {
-    //Serial.println("Error Sending Message...");
-    Serial.println("order___,33.555");
-
-      delay(100);
+    Serial.println("Error Sending Message...");
   }
 }
 
@@ -233,11 +235,7 @@ void setup()
   }
   else {
     Serial.println("Error Initializing MCP2515...");
-    while (1){
-      Serial.print("order___,33.555");
-
-      delay(100);
-    };
+    while (1);
   }
 
   //initialise mask and filter to allow only receipt of 0x7xx CAN IDs
@@ -258,7 +256,6 @@ void setup()
 
 void loop()
 {
-  
   //request coolant temp
   sendPID(PID_COOLANT_TEMP);
 
@@ -274,14 +271,7 @@ void loop()
   receivePID(PID_ENGINE_RPM);
 
   //abitrary loop delay
-  // delay(40);
-
-  // RequestStoredDTC();
-
-  // delay(40);
-
-  // ReceiveStoredDTC();
-
+  delay(40);
 
   delay(500);
 
