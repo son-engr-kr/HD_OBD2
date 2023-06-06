@@ -78,7 +78,7 @@ void PrintOBD2Data(char* HEADER, char* CATEGORY, char* pidname, double value){
 }
 
 void PrintOBD2DTC(char* HEADER, char* CATEGORY,char char1, int num2, int num3, int num4, int num5 , double value){
-  sprintf(buffer,"%s,%s,%s%d%d%d%d,%d",HEADER,CATEGORY,
+  sprintf(buffer,"%s,%s,%c%d%d%d%d,%d",HEADER,CATEGORY,
   char1,num2,num3,num4,num5,value );
   Serial.println(buffer);
 }
@@ -137,7 +137,7 @@ void ReceiveStoredDTC()
     }
     Serial.println("");
 
-    switch (rxBuf[3]>>6& 0x3){
+    switch ((rxBuf[3]>>6)& 0x3){
       uint8_t secondCode = (rxBuf[3]>>4) & 0x3;
       uint8_t thirdCode = (rxBuf[3]) & 0xF;
       uint8_t fourthCode = (rxBuf[4]>>4) & 0xF;
@@ -207,7 +207,7 @@ void ReceiveStoredDTC()
         }
 
           // 진단 코드가 두개일때 
-    switch (rxBuf[5]>>6& 0x3){
+    switch ((rxBuf[5]>>6)& 0x3){
       uint8_t secondCode = (rxBuf[5]>>4) & 0x3;
       uint8_t thirdCode = (rxBuf[5]) & 0xF;
       uint8_t fourthCode = (rxBuf[6]>>4) & 0xF;
