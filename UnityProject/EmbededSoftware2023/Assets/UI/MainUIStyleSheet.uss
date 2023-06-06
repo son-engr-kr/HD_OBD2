@@ -1,20 +1,24 @@
-.CarViewFrame--Center {
+.CarViewFrame--Full {
     background-image: resource('CameraRenderTexture');
-    width: 70%;
-    height: 70%;
+    width: 100%;
+    height: 100%;
     position: absolute;
-    left: 15%;
-    top: 15%;
-    transition-duration: 1s;
+    left: 0;
+    top: 0;
+    transition-duration: 0.5s;
     transition-timing-function: ease-in-out;
 }
 
-.CarViewFrame--Left {
-    transition-duration: 1s;
+.CarViewFrame--DTC {
+    background-image: resource('CameraRenderTexture');
+    width: 30%;
+    height: 30%;
+    position: absolute;
+    left: 35%;
+    top: 0;
+    transition-duration: 0.5s;
     transition-timing-function: ease-in-out;
-    left: 0;
-    width: 70%;
-    height: 70%;
+    transition-delay: 2s;
 }
 
 .CarStatusFrame--Show {
@@ -23,10 +27,11 @@
     position: absolute;
     width: 30%;
     height: 90%;
-    transition-duration: 1s;
+    transition-duration: 0.3s;
     transition-timing-function: ease-in-out;
-    left: 20%;
+    left: auto;
     top: 10%;
+    right: 5%;
 }
 
 .CarStatusFrame--Hide {
@@ -35,10 +40,11 @@
     position: absolute;
     width: 30%;
     height: 90%;
-    transition-duration: 1s;
+    transition-duration: 0.3s;
     transition-timing-function: ease-in-out;
-    left: 20%;
-    top: 100%;
+    left: auto;
+    top: 10%;
+    right: -30%;
 }
 
 .LeftTabButton {
@@ -94,9 +100,30 @@
     border-bottom-right-radius: 8px;
 }
 
-.CarViewFrame--Full {
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
+.DTCFrame--Show {
+    flex-grow: 1;
+    background-color: rgba(0, 0, 0, 0);
+    position: absolute;
+    left: auto;
+    right: 5%;
+    width: 30%;
+    height: 80%;
+    top: 10%;
+    transition-property: all;
+    transition-timing-function: ease-in-out;
+    transition-duration: 0.3s;
+}
+
+.DTCFrame--Hide {
+    flex-grow: 1;
+    background-color: rgba(0, 0, 0, 0);
+    position: absolute;
+    left: auto;
+    right: -30%;
+    width: 30%;
+    height: 80%;
+    top: 10%;
+    transition-property: all;
+    transition-timing-function: ease-in-out;
+    transition-duration: 0.3s;
 }

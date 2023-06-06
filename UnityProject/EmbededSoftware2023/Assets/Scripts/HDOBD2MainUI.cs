@@ -19,11 +19,15 @@ public class HDOBD2MainUI : MonoBehaviour
     static HDOBD2MainUI _instance;
     Label _DebugLabel;
     VisualElement _CarStatusFrame;
+    VisualElement _DTCFrame;
     VisualElement _CarViewFrame;
     ScrollView _CarStatusScrollView;
     ScrollView _DTCScrollView;
+    VisualElement _LeftFrame;
+    VisualElement _LeftTab2;
+
     VisualTreeAsset _CarStatusRowResource;
-    Cinemachine.CinemachineVirtualCamera _VCam;
+    
     void Awake()
     {
         QualitySettings.vSyncCount = 0;
@@ -35,17 +39,36 @@ public class HDOBD2MainUI : MonoBehaviour
         _DebugLabel = root.Q<Label>("DebugLabel");
 
         _CarStatusFrame = root.Q<VisualElement>("CarStatusFrame");
+        _DTCFrame = root.Q<VisualElement>("DTCFrame");
         _CarViewFrame = root.Q<VisualElement>("CarViewFrame");
         _CarStatusScrollView = root.Q<ScrollView>("CarStatusScrollView");
         _DTCScrollView = root.Q<ScrollView>("DTCScrollView");
+        _LeftTab2 = root.Q<VisualElement>("LeftTab2");
 
-        root.Q<Button>("ButtonTest1").RegisterCallback<ClickEvent>((ClickEvent evt) =>
+        var buttonCarStatus = _LeftTab2.Q<Button>("ButtonCarStatus");
+        var buttonDTC = _LeftTab2.Q<Button>("ButtonDTC");
+        var leftTab2ButtonList = new List<Button>() { buttonCarStatus , buttonDTC};
+        foreach(var dstButton in leftTab2ButtonList)
+        {
+            dstButton.RegisterCallback<ClickEvent>((ClickEvent evt) =>
+            {
+                foreach (var otherButton in leftTab2ButtonList)
+                {
+                    otherButton.RemoveFromClassList("LeftTab2Button--Selected");
+                }
+                dstButton.AddToClassList("LeftTab2Button--Selected");
+            });
+        }
+        buttonCarStatus.RegisterCallback<ClickEvent>((ClickEvent evt) =>
         {
             UIStatusMode();
+            CarViewVCamController.ChangeView(CarViewVCamController.VIEW_POSITION.FRONT_SIDE);
         });
-        root.Q<Button>("ButtonTest2").RegisterCallback<ClickEvent>((ClickEvent evt) =>
+        buttonDTC.RegisterCallback<ClickEvent>((ClickEvent evt) =>
         {
             UIDTCMode();
+            CarViewVCamController.ChangeView(CarViewVCamController.VIEW_POSITION.TOP);
+
         });
         List<string> statusNameList = new List<string>() { "1", "2", "3" };
         _CarStatusRowResource = Resources.Load<VisualTreeAsset>("CarStatusRow");
@@ -56,7 +79,7 @@ public class HDOBD2MainUI : MonoBehaviour
         }
         _DTCScrollView.Clear();
 
-        _VCam = GameObject.FindFirstObjectByType<Cinemachine.CinemachineVirtualCamera>();
+       
     }
     Queue<string> _debugStrings = new Queue<string>();
     static public void PrintlnDebugLabel(string text)
@@ -105,12 +128,15 @@ public class HDOBD2MainUI : MonoBehaviour
     void UIStatusMode()
     {
         _CarStatusFrame.RemoveFromClassList("CarStatusFrame--Hide");
-        _CarViewFrame.RemoveFromClassList("CarViewFrame--Left");
+        _DTCFrame.AddToClassList("DTCFrame--Hide");
+        _CarViewFrame.RemoveFromClassList("CarViewFrame--DTC");
     }
     void UIDTCMode()
     {
         _CarStatusFrame.AddToClassList("CarStatusFrame--Hide");
-        _CarViewFrame.AddToClassList("CarViewFrame--Left");
+        _DTCFrame.RemoveFromClassList("DTCFrame--Hide");
+
+        _CarViewFrame.AddToClassList("CarViewFrame--DTC");
     }
     
 
