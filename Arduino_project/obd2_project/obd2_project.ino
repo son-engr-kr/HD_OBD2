@@ -52,6 +52,9 @@
 #define PID_ENGINE_TORQUE_PERCENTAGE 0x62
 #define PID_ENGINE_REF_TORQUE 0x63
 #define PID_REQUEST_DTC 0x01
+#define OBD2_HEADER "OBD2____"
+#define OBD2_CATEGORY_STATUS "STATUS"
+#define OBD2_CATEGORY_DTC "DTC"
 //----------------------------------------------
 
 #define CAN_ID_PID 0x7DF //OBD-II CAN frame ID
@@ -66,6 +69,43 @@ long unsigned int rxId;
 unsigned char len = 0;
 unsigned char rxBuf[8];
 char msgString[128];                        // Array to store serial string
+char buffer[1000];
+char DTCFirstCode;
+
+void PrintOBD2Data(char* HEADER, char* CATEGORY, char* pidname, double value){
+  sprintf(buffer,"%s,%s,%s,%d",HEADER,CATEGORY,pidname,value);
+  Serial.println(buffer);
+}
+
+void PrintOBD2DTC(char* HEADER, char* CATEGORY,char char1, int num2, int num3, int num4, int num5 , double value){
+  sprintf(buffer,"%s,%s,%s%d%d%d%d,%d",HEADER,CATEGORY,
+  char1,num2,num3,num4,num5,value );
+  Serial.println(buffer);
+}
+
+void ClearDTCandMIL(){
+  unsigned char tmp[8] = {0x02, 0x04, 0x01, 0, 0, 0, 0, 0};
+
+  byte sndStat = CAN0.sendMsgBuf(CAN_ID_PID, 0, 8, tmp);
+
+  if (sndStat == CAN_OK) {
+    PrintOBD2Data(OBD2_HEADER,OBD2_CATEGORY_DTC,"Clear_Test_Sending_Success",0);
+    // sprintf(buffer,"%s,%s,%s,%d",OBD2_HEADER,OBD2_CATEGORY_DTC,"Clear_Test_Sending_Success",0 );
+    // Serial.println(buffer);
+    // Serial.println("OBD2____,DTC,Clear_Test_Sending_Success,0");
+  }
+  else {
+    Serial.println("Error Sending Message...");
+    PrintOBD2Data(OBD2_HEADER,OBD2_CATEGORY_DTC,"Clear_Test_Sending_fail",0);
+    // Serial.println("OBD2____,DTC,Clear_Test_Sending_fail,0");
+    
+    // sprintf(buffer,"%s,%s,%s,%d",OBD2_HEADER,OBD2_CATEGORY_DTC,"Clear_Test_Sending_fail",0 );
+    // Serial.println(buffer);
+  }
+
+}
+
+
 void RequestStoredDTC()
 {
   unsigned char tmp[8] = {0x02, 0x03, 0x01, 0, 0, 0, 0, 0};
@@ -74,10 +114,11 @@ void RequestStoredDTC()
 
   if (sndStat == CAN_OK) {
     Serial.println("Request stored DTC");
+    PrintOBD2Data(OBD2_HEADER,OBD2_CATEGORY_DTC,"Request_Test_Sending_Success",0);
   }
   else {
     Serial.println("Error Sending Message...");
-    Serial.println("OBD2____,DTC,TEST,0");
+    PrintOBD2Data(OBD2_HEADER,OBD2_CATEGORY_DTC,"Request_Test_Sending_fail",0);
   }
 
 }
@@ -101,58 +142,69 @@ void ReceiveStoredDTC()
       uint8_t thirdCode = (rxBuf[3]) & 0xF;
       uint8_t fourthCode = (rxBuf[4]>>4) & 0xF;
       uint8_t fifthCode =  (rxBuf[4]) & 0xF;
+      
       case 0x00:
         // Serial.print("DTC code is : P");
         // Serial.print(secondCode, DEC); //DTC에 각 자리수마다 9를 넘어가는 수가 없어서 10진법으로 해도 상관없을듯.
         // Serial.print(thirdCode, DEC); 
         // Serial.print(fourthCode, DEC);
         // Serial.println(fifthCode, DEC);
-        Serial.print("OBD2____,DTC,P");
-        Serial.print(secondCode, DEC);
-        Serial.print(thirdCode, DEC); 
-        Serial.print(fourthCode, DEC);
-        Serial.print(fifthCode, DEC);
-        Serial.println(",0");
+
+        // Serial.print("OBD2____,DTC,P");
+        // Serial.print(secondCode, DEC);
+        // Serial.print(thirdCode, DEC); 
+        // Serial.print(fourthCode, DEC);
+        // Serial.print(fifthCode, DEC);
+        // Serial.println(",0");
+        DTCFirstCode = 'P';
+        PrintOBD2DTC(OBD2_HEADER,OBD2_CATEGORY_DTC,DTCFirstCode,secondCode,thirdCode,fourthCode,fifthCode,0);
+        // sprintf(buffer,"%s,%s,%s%d%d%d%d,%d",OBD2_HEADER,OBD2_CATEGORY_DTC,
+        // "P",secondCode,thirdCode,fourthCode,fifthCode,0 );
+        // Serial.println(buffer);
         break;
       case 0x01:
-        // Serial.print("DTC code is : C");
+        // Serial.print("OBD2____,DTC,C");
         // Serial.print(secondCode, DEC);
         // Serial.print(thirdCode, DEC); 
         // Serial.print(fourthCode, DEC);
-        // Serial.println(fifthCode, DEC);
-        Serial.print("OBD2____,DTC,C");
-        Serial.print(secondCode, DEC);
-        Serial.print(thirdCode, DEC); 
-        Serial.print(fourthCode, DEC);
-        Serial.print(fifthCode, DEC);
-        Serial.println(",0");
+        // Serial.print(fifthCode, DEC);
+        // Serial.println(",0");
+        DTCFirstCode = 'C';
+        PrintOBD2DTC(OBD2_HEADER,OBD2_CATEGORY_DTC,DTCFirstCode,secondCode,thirdCode,fourthCode,fifthCode,0);
+        // sprintf(buffer,"%s,%s,%s%d%d%d%d,%d",OBD2_HEADER,OBD2_CATEGORY_DTC,
+        // "C",secondCode,thirdCode,fourthCode,fifthCode,0 );
+        // Serial.println(buffer);
         break;
       case 0x02:
-        // Serial.print("DTC code is : B");
+        // Serial.print("OBD2____,DTC,B");
         // Serial.print(secondCode, DEC);
         // Serial.print(thirdCode, DEC); 
         // Serial.print(fourthCode, DEC);
-        // Serial.println(fifthCode, DEC);
-        Serial.print("OBD2____,DTC,B");
-        Serial.print(secondCode, DEC);
-        Serial.print(thirdCode, DEC); 
-        Serial.print(fourthCode, DEC);
-        Serial.print(fifthCode, DEC);
-        Serial.println(",0");
+        // Serial.print(fifthCode, DEC);
+        // Serial.println(",0");
+        DTCFirstCode = 'B';
+        PrintOBD2DTC(OBD2_HEADER,OBD2_CATEGORY_DTC,DTCFirstCode,secondCode,thirdCode,fourthCode,fifthCode,0);
+        // sprintf(buffer,"%s,%s,%s%d%d%d%d,%d",OBD2_HEADER,OBD2_CATEGORY_DTC,
+        // "B",secondCode,thirdCode,fourthCode,fifthCode,0 );
+        // Serial.println(buffer);
         break;
       case 0x03:
-        // Serial.print("DTC code is : U");
+        // Serial.print("OBD2____,DTC,U");
         // Serial.print(secondCode, DEC);
         // Serial.print(thirdCode, DEC); 
         // Serial.print(fourthCode, DEC);
-        // Serial.println(fifthCode, DEC);
-        Serial.print("OBD2____,DTC,U");
-        Serial.print(secondCode, DEC);
-        Serial.print(thirdCode, DEC); 
-        Serial.print(fourthCode, DEC);
-        Serial.print(fifthCode, DEC);
-        Serial.println(",0");
-        break;}
+        // Serial.print(fifthCode, DEC);
+        // Serial.println(",0");
+        DTCFirstCode = 'U';
+        PrintOBD2DTC(OBD2_HEADER,OBD2_CATEGORY_DTC,DTCFirstCode,secondCode,thirdCode,fourthCode,fifthCode,0);
+        // sprintf(buffer,"%s,%s,%s%d%d%d%d,%d",OBD2_HEADER,OBD2_CATEGORY_DTC,
+        // "U",secondCode,thirdCode,fourthCode,fifthCode,0 );
+        // Serial.println(buffer);
+        break;
+      default:
+        Serial.println("OBD2____,DTC,DEFAULT,0");
+        break;
+        }
 
           // 진단 코드가 두개일때 
     switch (rxBuf[5]>>6& 0x3){
@@ -161,33 +213,57 @@ void ReceiveStoredDTC()
       uint8_t fourthCode = (rxBuf[6]>>4) & 0xF;
       uint8_t fifthCode =  (rxBuf[6]) & 0xF;
       case 0x00:
-        Serial.print("DTC code is : P");
-        Serial.print(secondCode, DEC); 
-        Serial.print(thirdCode, DEC); 
-        Serial.print(fourthCode, DEC);
-        Serial.println(fifthCode, DEC);
+        // Serial.print("DTC code is : P");
+        // Serial.print(secondCode, DEC); 
+        // Serial.print(thirdCode, DEC); 
+        // Serial.print(fourthCode, DEC);
+        // Serial.println(fifthCode, DEC);
+        DTCFirstCode = 'P';
+        PrintOBD2DTC(OBD2_HEADER,OBD2_CATEGORY_DTC,DTCFirstCode,secondCode,thirdCode,fourthCode,fifthCode,0);
+        // sprintf(buffer,"%s,%s,%s%d%d%d%d,%d",OBD2_HEADER,OBD2_CATEGORY_DTC,
+        // "P",secondCode,thirdCode,fourthCode,fifthCode,0 );
+        // Serial.println(buffer);
         break;
       case 0x01:
-        Serial.print("DTC code is : C");
-        Serial.print(secondCode, DEC);
-        Serial.print(thirdCode, DEC); 
-        Serial.print(fourthCode, DEC);
-        Serial.println(fifthCode, DEC);
+        // Serial.print("DTC code is : C");
+        // Serial.print(secondCode, DEC);
+        // Serial.print(thirdCode, DEC); 
+        // Serial.print(fourthCode, DEC);
+        // Serial.println(fifthCode, DEC);
+        DTCFirstCode = 'C';
+        PrintOBD2DTC(OBD2_HEADER,OBD2_CATEGORY_DTC,DTCFirstCode,secondCode,thirdCode,fourthCode,fifthCode,0);
+        // sprintf(buffer,"%s,%s,%s%d%d%d%d,%d",OBD2_HEADER,OBD2_CATEGORY_DTC,
+        // "C",secondCode,thirdCode,fourthCode,fifthCode,0 );
+        // Serial.println(buffer);
         break;
       case 0x02:
-        Serial.print("DTC code is : B");
-        Serial.print(secondCode, DEC);
-        Serial.print(thirdCode, DEC); 
-        Serial.print(fourthCode, DEC);
-        Serial.println(fifthCode, DEC);
+        // Serial.print("DTC code is : B");
+        // Serial.print(secondCode, DEC);
+        // Serial.print(thirdCode, DEC); 
+        // Serial.print(fourthCode, DEC);
+        // Serial.println(fifthCode, DEC);
+        DTCFirstCode = 'B';
+        PrintOBD2DTC(OBD2_HEADER,OBD2_CATEGORY_DTC,DTCFirstCode,secondCode,thirdCode,fourthCode,fifthCode,0);
+        // sprintf(buffer,"%s,%s,%s%d%d%d%d,%d",OBD2_HEADER,OBD2_CATEGORY_DTC,
+        // "B",secondCode,thirdCode,fourthCode,fifthCode,0 );
+        // Serial.println(buffer);
         break;
       case 0x03:
-        Serial.print("DTC code is : U");
-        Serial.print(secondCode, DEC);
-        Serial.print(thirdCode, DEC); 
-        Serial.print(fourthCode, DEC);
-        Serial.println(fifthCode, DEC);
-        break;}
+        // Serial.print("DTC code is : U");
+        // Serial.print(secondCode, DEC);
+        // Serial.print(thirdCode, DEC); 
+        // Serial.print(fourthCode, DEC);
+        // Serial.println(fifthCode, DEC);
+        DTCFirstCode = 'U';
+        PrintOBD2DTC(OBD2_HEADER,OBD2_CATEGORY_DTC,DTCFirstCode,secondCode,thirdCode,fourthCode,fifthCode,0);
+        // sprintf(buffer,"%s,%s,%s%d%d%d%d,%d",OBD2_HEADER,OBD2_CATEGORY_DTC,
+        // "U",secondCode,thirdCode,fourthCode,fifthCode,0 );
+        // Serial.println(buffer);
+        break;
+      default:
+        Serial.println("OBD2____,DTC,DEFAULT,0");
+        break;
+        }
 
     }
 }
@@ -507,6 +583,10 @@ void loop()
   delay(40);
 
   ReceiveStoredDTC();
+
+  delay(40);
+
+  ClearDTCandMIL();
 
 
   delay(500);
