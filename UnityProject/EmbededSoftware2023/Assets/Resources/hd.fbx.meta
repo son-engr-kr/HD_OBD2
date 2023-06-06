@@ -3,7 +3,92 @@ guid: 9972a2fcdf7680142b62ea837c185fff
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: AvanteHDCarpaint
+    second: {fileID: 2100000, guid: a4fcf3fd85499e74a8d37d8eddcadc51, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: AventeHD_front_light_glass
+    second: {fileID: 2100000, guid: 3be0840080df5b443b9ea749065de58c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tire
+    second: {fileID: 2100000, guid: 45763440daa23c84091dcfe401f41b4f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tire.001
+    second: {fileID: 2100000, guid: c9b2b5820bf1af144a3a1df7e91753ec, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tire.002
+    second: {fileID: 2100000, guid: 0e0efcefa0da0d6449823d935d8fea69, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tire.003
+    second: {fileID: 2100000, guid: 0aeaec6ee19bd324199a0bc2fd0fbd4b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wheel
+    second: {fileID: 2100000, guid: 73123a430d0b5914f88a95eb13e025b9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wheel.001
+    second: {fileID: 2100000, guid: 8684f641a0af55f4c8b1cdd5e293a636, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wheel.002
+    second: {fileID: 2100000, guid: cec1cf3b15e3b5c43ba4e7badf3fc7a5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wheel.003
+    second: {fileID: 2100000, guid: e7d78053465149440a1e30cc88946053, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: chrome
+    second: {fileID: 2100000, guid: 4cfea86ff0d4c3f4b83c1bb698d2fd40, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: front_glass
+    second: {fileID: 2100000, guid: b1cabc137a7d0414fb6e388ece4d1429, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: front_light_source
+    second: {fileID: 2100000, guid: 6f18956c06038014f920f5dbf0a96f70, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: gril_black_plastic
+    second: {fileID: 2100000, guid: f769c93dc0b563d4e914cd3328389d45, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: light_backplate
+    second: {fileID: 2100000, guid: cbd3473de344c6e40b966332e0146756, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: rear_light_glass
+    second: {fileID: 2100000, guid: f8f37b9f9141d044caaea6fdf9b0b3f2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: turn_signal_light_glass
+    second: {fileID: 2100000, guid: 166f40534d642db4eb861b7c259a67ad, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

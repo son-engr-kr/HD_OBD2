@@ -23,7 +23,7 @@
     height: 90%;
     transition-duration: 1s;
     transition-timing-function: ease-in-out;
-    left: 10%;
+    left: 20%;
     top: 10%;
 }
 
@@ -35,6 +35,59 @@
     height: 90%;
     transition-duration: 1s;
     transition-timing-function: ease-in-out;
-    left: 10%;
+    left: 20%;
     top: 100%;
+}
+
+.LeftTabButton {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 80px;
+    height: 80px;
+    padding-left: 2px;
+    padding-right: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    background-color: rgb(70, 70, 70);
+    transition-property: background-color;
+    transition-timing-function: ease-in-out;
+}
+
+.LeftTabButton--Selected {
+    background-color: rgb(64, 82, 120);
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in-out;
+}
+
+.LeftTab2Button {
+    height: 80px;
+    width: 100%;
+    background-color: rgba(188, 188, 188, 0);
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+    color: rgb(255, 255, 255);
+    font-size: 33px;
+    -unity-font-style: bold;
+}
+
+.LeftTab2Button--Selected {
+    background-color: rgb(69, 70, 77);
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
 }
