@@ -18,7 +18,7 @@
     top: 0;
     transition-duration: 0.5s;
     transition-timing-function: ease-in-out;
-    transition-delay: 2s;
+    transition-delay: 0s;
 }
 
 .CarStatusFrame--Show {
@@ -104,11 +104,11 @@
     flex-grow: 1;
     background-color: rgba(0, 0, 0, 0);
     position: absolute;
-    left: auto;
-    right: 5%;
-    width: 30%;
-    height: 80%;
-    top: 10%;
+    left: 20%;
+    right: auto;
+    width: 25%;
+    height: 70%;
+    top: 25%;
     transition-property: all;
     transition-timing-function: ease-in-out;
     transition-duration: 0.3s;
@@ -118,11 +118,11 @@
     flex-grow: 1;
     background-color: rgba(0, 0, 0, 0);
     position: absolute;
-    left: auto;
-    right: -30%;
-    width: 30%;
-    height: 80%;
-    top: 10%;
+    left: 100%;
+    right: auto;
+    width: 25%;
+    height: 70%;
+    top: 25%;
     transition-property: all;
     transition-timing-function: ease-in-out;
     transition-duration: 0.3s;
