@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; justify-content: space-between; position: relative; font-size: 36px; margin-left: 8px; margin-right: 8px; margin-top: 10px; margin-bottom: 8px; width: 100%; height: 100%;">
+        <ui:Label tabindex="-1" text="StatusName" display-tooltip-when-elided="true" name="StatusName" style="color: rgb(255, 255, 255);" />
+        <ui:Label tabindex="-1" text="StatusValue" display-tooltip-when-elided="true" name="StatusValue" style="color: rgb(255, 255, 255);" />
+    </ui:VisualElement>
+</ui:UXML>
