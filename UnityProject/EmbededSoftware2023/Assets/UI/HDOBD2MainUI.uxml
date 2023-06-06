@@ -2,7 +2,7 @@
     <ui:Template name="CarStatusRow" src="project://database/Assets/UI/Resources/CarStatusRow.uxml?fileID=9197481963319205126&amp;guid=655c823f62d30004caf72e716a0aca2f&amp;type=3#CarStatusRow" />
     <Style src="project://database/Assets/UI/MainUIStyleSheet.uss?fileID=7433441132597879392&amp;guid=2a9b87bc83e68b64aaedc8027d0d854a&amp;type=3#MainUIStyleSheet" />
     <ui:VisualElement name="BackGround" style="flex-grow: 1; background-color: rgb(31, 31, 31); position: absolute; width: 100%; height: 100%; color: rgb(0, 0, 0); top: -1px; left: 0;" />
-    <ui:VisualElement name="CarViewFrame" class="CarViewFrame--Center" />
+    <ui:VisualElement name="CarViewFrame" class="CarViewFrame--Full" style="background-image: resource(&apos;CameraRenderTexture&apos;);" />
     <ui:ScrollView name="DebugScrollView" style="display: none; position: absolute;">
         <ui:Label text="Label" display-tooltip-when-elided="true" name="DebugLabel" style="max-width: 1920px;" />
     </ui:ScrollView>

@@ -23,6 +23,7 @@ public class HDOBD2MainUI : MonoBehaviour
     ScrollView _CarStatusScrollView;
     ScrollView _DTCScrollView;
     VisualTreeAsset _CarStatusRowResource;
+    Cinemachine.CinemachineVirtualCamera _VCam;
     void Awake()
     {
         QualitySettings.vSyncCount = 0;
@@ -54,6 +55,8 @@ public class HDOBD2MainUI : MonoBehaviour
             UpdatePIDStatus(statusName, "test");
         }
         _DTCScrollView.Clear();
+
+        _VCam = GameObject.FindFirstObjectByType<Cinemachine.CinemachineVirtualCamera>();
     }
     Queue<string> _debugStrings = new Queue<string>();
     static public void PrintlnDebugLabel(string text)
