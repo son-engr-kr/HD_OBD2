@@ -77,7 +77,6 @@ void RequestStoredDTC()
   }
   else {
     Serial.println("Error Sending Message...");
-    Serial.println("OBD2____,DTC,TEST,0");
   }
 
 }
@@ -102,56 +101,32 @@ void ReceiveStoredDTC()
       uint8_t fourthCode = (rxBuf[4]>>4) & 0xF;
       uint8_t fifthCode =  (rxBuf[4]) & 0xF;
       case 0x00:
-        // Serial.print("DTC code is : P");
-        // Serial.print(secondCode, DEC); //DTC에 각 자리수마다 9를 넘어가는 수가 없어서 10진법으로 해도 상관없을듯.
-        // Serial.print(thirdCode, DEC); 
-        // Serial.print(fourthCode, DEC);
-        // Serial.println(fifthCode, DEC);
-        Serial.print("OBD2____,DTC,P");
-        Serial.print(secondCode, DEC);
+        Serial.print("DTC code is : P");
+        Serial.print(secondCode, DEC); //DTC에 각 자리수마다 9를 넘어가는 수가 없어서 10진법으로 해도 상관없을듯.
         Serial.print(thirdCode, DEC); 
         Serial.print(fourthCode, DEC);
-        Serial.print(fifthCode, DEC);
-        Serial.println(",0");
+        Serial.println(fifthCode, DEC);
         break;
       case 0x01:
-        // Serial.print("DTC code is : C");
-        // Serial.print(secondCode, DEC);
-        // Serial.print(thirdCode, DEC); 
-        // Serial.print(fourthCode, DEC);
-        // Serial.println(fifthCode, DEC);
-        Serial.print("OBD2____,DTC,C");
+        Serial.print("DTC code is : C");
         Serial.print(secondCode, DEC);
         Serial.print(thirdCode, DEC); 
         Serial.print(fourthCode, DEC);
-        Serial.print(fifthCode, DEC);
-        Serial.println(",0");
+        Serial.println(fifthCode, DEC);
         break;
       case 0x02:
-        // Serial.print("DTC code is : B");
-        // Serial.print(secondCode, DEC);
-        // Serial.print(thirdCode, DEC); 
-        // Serial.print(fourthCode, DEC);
-        // Serial.println(fifthCode, DEC);
-        Serial.print("OBD2____,DTC,B");
+        Serial.print("DTC code is : B");
         Serial.print(secondCode, DEC);
         Serial.print(thirdCode, DEC); 
         Serial.print(fourthCode, DEC);
-        Serial.print(fifthCode, DEC);
-        Serial.println(",0");
+        Serial.println(fifthCode, DEC);
         break;
       case 0x03:
-        // Serial.print("DTC code is : U");
-        // Serial.print(secondCode, DEC);
-        // Serial.print(thirdCode, DEC); 
-        // Serial.print(fourthCode, DEC);
-        // Serial.println(fifthCode, DEC);
-        Serial.print("OBD2____,DTC,U");
+        Serial.print("DTC code is : U");
         Serial.print(secondCode, DEC);
         Serial.print(thirdCode, DEC); 
         Serial.print(fourthCode, DEC);
-        Serial.print(fifthCode, DEC);
-        Serial.println(",0");
+        Serial.println(fifthCode, DEC);
         break;}
 
           // 진단 코드가 두개일때 
@@ -205,7 +180,8 @@ void sendPID(unsigned char __pid)
   }
   else {
     Serial.println("Error Sending Message...");
-    Serial.println("OBD2____,STATUS,Test,0");
+    Serial.println("order___,33.555");
+
       delay(100);
   }
 }
@@ -426,10 +402,8 @@ void receivePID(unsigned char __pid)
         if(rxBuf[2] == PID_COOLANT_TEMP){
           uint8_t temp;
           temp = rxBuf[3] - 40;
-          // Serial.print("Engine Coolant Temp (degC): ");
-          // Serial.println(temp, DEC);
-          Serial.print("OBD2____,STATUS,COOLANT_TEMP,");
-          Serial.println(temp,DEC);
+          Serial.print("Engine Coolant Temp (degC): ");
+          Serial.println(temp, DEC);
         }
       break;
 
@@ -437,10 +411,8 @@ void receivePID(unsigned char __pid)
         if(rxBuf[2] == PID_ENGINE_RPM){
           uint16_t rpm;
           rpm = ((256 * rxBuf[3]) + rxBuf[4]) / 4;
-          // Serial.print("Engine Speed (rpm): ");
-          // Serial.println(rpm, DEC);
-          Serial.print("OBD2____,STATUS,RPM,");
-          Serial.println(rpm,DEC);
+          Serial.print("Engine Speed (rpm): ");
+          Serial.println(rpm, DEC);
         }
       break;
 
@@ -462,6 +434,8 @@ void setup()
   else {
     Serial.println("Error Initializing MCP2515...");
     while (1){
+      Serial.print("order___,33.555");
+
       delay(100);
     };
   }
@@ -500,13 +474,13 @@ void loop()
   receivePID(PID_ENGINE_RPM);
 
   //abitrary loop delay
-  delay(40);
+  // delay(40);
 
-  RequestStoredDTC();
+  // RequestStoredDTC();
 
-  delay(40);
+  // delay(40);
 
-  ReceiveStoredDTC();
+  // ReceiveStoredDTC();
 
 
   delay(500);
