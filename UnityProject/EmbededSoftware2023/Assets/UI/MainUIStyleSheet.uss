@@ -106,7 +106,6 @@
     position: absolute;
     left: 20%;
     right: auto;
-    width: 25%;
     height: 70%;
     top: 25%;
     transition-property: all;
@@ -120,7 +119,6 @@
     position: absolute;
     left: 100%;
     right: auto;
-    width: 25%;
     height: 70%;
     top: 25%;
     transition-property: all;

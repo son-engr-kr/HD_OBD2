@@ -17,40 +17,45 @@
             <ui:Instance template="CarStatusRow" name="CarStatusRow" />
         </ui:ScrollView>
     </ui:VisualElement>
-    <ui:VisualElement name="DTCFrame" class="DTCFrame--Show DTCFrame--Hide">
-        <ui:Label tabindex="-1" text="DTC Code" display-tooltip-when-elided="true" style="font-size: 66px; color: rgb(255, 255, 255); -unity-font-style: bold; -unity-text-align: upper-center;" />
-        <ui:ScrollView name="DTCScrollView" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" focusable="false">
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-            <ui:Instance template="CarStatusRow" name="CarStatusRow" />
-        </ui:ScrollView>
+    <ui:VisualElement name="DTCFrame" class="DTCFrame--Show DTCFrame--Hide" style="flex-direction: row; width: auto;">
+        <ui:VisualElement name="DTCList" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); width: auto;">
+            <ui:Label tabindex="-1" text="DTC Code" display-tooltip-when-elided="true" style="font-size: 66px; color: rgb(255, 255, 255); -unity-font-style: bold; -unity-text-align: upper-center;" />
+            <ui:ScrollView name="DTCScrollView" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" focusable="false" style="width: 500px;">
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+                <ui:Instance template="CarStatusRow" name="CarStatusRow" />
+            </ui:ScrollView>
+        </ui:VisualElement>
+        <ui:VisualElement name="DTCExplain" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); width: 300px; left: auto;">
+            <ui:Label tabindex="-1" text="DTCExplainDTCExplainDTCExplainDTCExplainDTCExplainDTCExplainDTCExplainDTCExplainDTCExplainDTCExplainDTCExplainDTCExplainDTCExplainDTCExplainDTCExplain" display-tooltip-when-elided="true" style="color: rgb(255, 255, 255); white-space: normal; font-size: 32px;" />
+        </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="LeftTab" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); position: absolute; width: 100px; height: 95%; margin-top: 0; top: 5%; margin-left: 0; margin-right: 0; margin-bottom: 0; justify-content: center; align-items: center; color: rgb(0, 0, 0); transition-property: position; border-left-color: rgba(255, 255, 255, 0); border-right-color: rgb(255, 255, 255); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); border-left-width: 0; border-right-width: 2px;">
         <ui:Button display-tooltip-when-elided="true" name="Button" class="LeftTabButton LeftTabButton--Selected" />
