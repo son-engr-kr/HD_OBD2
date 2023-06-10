@@ -39,6 +39,8 @@ public class HDOBD2MainUI : MonoBehaviour
     Button _CurrentSelectedLeftDiagnosisTabButton;
 
 
+    VisualElement _Cluster;
+
     CircularGaugeCustomControl _CustomControlTest;
     RPMGaugeCustomControl _RPMGaugeCustomControl;
     void Awake()
@@ -76,6 +78,7 @@ public class HDOBD2MainUI : MonoBehaviour
                 if(dstButton == _ButtonMainDashboard)
                 {
                     CarViewVCamController.ChangeView(CarViewVCamController.VIEW_POSITION.REAR_TOP);
+                    _Cluster.RemoveFromClassList("Cluster--Hide");
                     HideAllDiagnosisWindow();
                 }
                 else if(dstButton == _ButtonDiagnosis)
@@ -92,6 +95,8 @@ public class HDOBD2MainUI : MonoBehaviour
                     //        _CurrentSelectedLeftDiagnosisTabButton.SendEvent(e);
                     //}
                     _LeftDiagnosisTab.RemoveFromClassList("LeftDiagnosisTab--Hide");
+                    _Cluster.AddToClassList("Cluster--Hide");
+
                 }
                 _CurrentSelectedLeftTabButton = dstButton;
             });
@@ -133,8 +138,10 @@ public class HDOBD2MainUI : MonoBehaviour
         }
         _DTCScrollView.Clear();
 
-        _CustomControlTest = root.Q<CircularGaugeCustomControl>("circular-gauge");
-        _RPMGaugeCustomControl = root.Q<RPMGaugeCustomControl>("rpm-gauge");
+
+        _Cluster = root.Q<VisualElement>("Cluster");
+        _CustomControlTest = _Cluster.Q<CircularGaugeCustomControl>("circular-gauge");
+        _RPMGaugeCustomControl = _Cluster.Q<RPMGaugeCustomControl>("rpm-gauge");
 
 
     }
@@ -181,21 +188,21 @@ public class HDOBD2MainUI : MonoBehaviour
         }
         action?.Invoke();
 
-        _CustomControlTest.Value = (_CustomControlTest.Value + 0.005f);
-        if(_CustomControlTest.Value >= 0.95f)
-        {
-            _CustomControlTest.Value = 0f;
-        }
-        if(_CustomControlTest.Value > 0.5f)
-        {
-            _CustomControlTest.IsBlink = true;
-            _CustomControlTest.Value = _CustomControlTest.Value;
-        }
-        else
-        {
-            _CustomControlTest.IsBlink = false;
+        //_CustomControlTest.Value = (_CustomControlTest.Value + 0.005f);
+        //if(_CustomControlTest.Value >= 0.95f)
+        //{
+        //    _CustomControlTest.Value = 0f;
+        //}
+        //if(_CustomControlTest.Value > 0.5f)
+        //{
+        //    _CustomControlTest.IsBlink = true;
+        //    _CustomControlTest.Value = _CustomControlTest.Value;
+        //}
+        //else
+        //{
+        //    _CustomControlTest.IsBlink = false;
 
-        }
+        //}
 
     }
 

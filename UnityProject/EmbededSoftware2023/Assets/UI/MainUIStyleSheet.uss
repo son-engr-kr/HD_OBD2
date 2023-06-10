@@ -175,3 +175,15 @@
     transition-duration: 0.3s;
     transition-timing-function: ease-in-out;
 }
+
+.Cluster {
+    visibility: visible;
+    transition-duration: 0.3s;
+    transition-timing-function: linear;
+}
+
+.Cluster--Hide {
+    visibility: hidden;
+    transition-duration: 0.3s;
+    transition-timing-function: linear;
+}
