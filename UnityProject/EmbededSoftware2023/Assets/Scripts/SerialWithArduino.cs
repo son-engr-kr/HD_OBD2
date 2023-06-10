@@ -53,7 +53,7 @@ public class SerialWithArduino : MonoBehaviour
         {
             //var su = Runtime.getRuntime().exec("/system/bin/su");
 #if UNITY_ANDROID
-            HDOBD2MainUI.DebugLabel($"Android permission request");
+            HDOBD2MainUI.PrintlnDebugLabel($"Android permission request");
             var permissionList = new List<string>() { Permission.ExternalStorageWrite, Permission.ExternalStorageRead, Permission.FineLocation };
             foreach(string permission in permissionList)
             {

@@ -242,7 +242,7 @@ public class CircularGaugeCustomControl : VisualElement
         {
             if ((idx) % (FillCount + SpaceCount) < FillCount) indiceCount += 6;
         }
-        Debug.Log($"squadNum:{squadNum}, vertCount:{vertCount}, indiceCount:{indiceCount}");
+        //Debug.Log($"squadNum:{squadNum}, vertCount:{vertCount}, indiceCount:{indiceCount}");
         //int indiceCount = (int)(Mathf.Ceil(squadNum / 2f) * 2 * 3);//squadNum 2 -> 1개만 씀 3 -> 2개 4 -> 2개 5->3개   squadNum/2
 
         float angleOffsetRad = AngleOffset * Mathf.Deg2Rad;
