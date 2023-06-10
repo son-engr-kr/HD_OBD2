@@ -41,8 +41,11 @@ public class HDOBD2MainUI : MonoBehaviour
 
     VisualElement _Cluster;
 
-    CircularGaugeCustomControl _CustomControlTest;
-    RPMGaugeCustomControl _RPMGaugeCustomControl;
+    //CircularGaugeCustomControl _CustomControlTest;
+    CircularGaugeCustomControl _RPMGaugeCustomControl;
+    Label _LabelRpm;
+    CircularGaugeCustomControl _SpeedometerGaugeCustomControl;
+    Label _LabelSpeed;
     void Awake()
     {
         QualitySettings.vSyncCount = 0;
@@ -140,8 +143,11 @@ public class HDOBD2MainUI : MonoBehaviour
 
 
         _Cluster = root.Q<VisualElement>("Cluster");
-        _CustomControlTest = _Cluster.Q<CircularGaugeCustomControl>("circular-gauge");
-        _RPMGaugeCustomControl = _Cluster.Q<RPMGaugeCustomControl>("rpm-gauge");
+        //_CustomControlTest = _Cluster.Q<CircularGaugeCustomControl>("circular-gauge");
+        _RPMGaugeCustomControl = _Cluster.Q<CircularGaugeCustomControl>("RpmGauge");
+        _LabelRpm = _Cluster.Q<Label>("RpmLabel");
+        _SpeedometerGaugeCustomControl = _Cluster.Q<CircularGaugeCustomControl>("SpeedometerGauge");
+        _LabelSpeed = _Cluster.Q<Label>("SpeedLabel");
 
 
     }
@@ -170,6 +176,9 @@ public class HDOBD2MainUI : MonoBehaviour
             _callbacks += callback;
         }
     }
+
+    float rpm;
+    float speed;
     void Update()
     {
         //sure, this updates constantly, again, for demo purposes... implement the actual update hook however you please
@@ -188,21 +197,26 @@ public class HDOBD2MainUI : MonoBehaviour
         }
         action?.Invoke();
 
-        //_CustomControlTest.Value = (_CustomControlTest.Value + 0.005f);
-        //if(_CustomControlTest.Value >= 0.95f)
-        //{
-        //    _CustomControlTest.Value = 0f;
-        //}
-        //if(_CustomControlTest.Value > 0.5f)
-        //{
-        //    _CustomControlTest.IsBlink = true;
-        //    _CustomControlTest.Value = _CustomControlTest.Value;
-        //}
-        //else
-        //{
-        //    _CustomControlTest.IsBlink = false;
+        rpm += 10f;
+        if (rpm > 6000) rpm = 0;
+        speed += 0.5f;
+        if (speed > 200) speed = 0;
 
-        //}
+        _LabelRpm.text = $"{rpm:0.}";
+        _LabelSpeed.text = $"{speed:0.}";
+
+        _RPMGaugeCustomControl.Value = (rpm / 3000f);
+        if (_RPMGaugeCustomControl.Value > 0.5f)
+        {
+            _RPMGaugeCustomControl.IsBlink = true;
+            _RPMGaugeCustomControl.Value = _RPMGaugeCustomControl.Value;
+        }
+        else
+        {
+            _RPMGaugeCustomControl.IsBlink = false;
+
+        }
+        _SpeedometerGaugeCustomControl.Value = (speed / 240);
 
     }
 

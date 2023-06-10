@@ -80,6 +80,8 @@ public class CircularGaugeCustomControl : VisualElement
     public int FillCount { get; set; }
     public int SpaceCount { get; set; }
     public float WidthHeightRatio { get; set; }
+    public int PolygonN { get; set; }
+
 
 
     private float m_overlayImageScale;
@@ -129,6 +131,7 @@ public class CircularGaugeCustomControl : VisualElement
         UxmlIntAttributeDescription m_fillCount = new UxmlIntAttributeDescription() { name = "fill-count", defaultValue = 3 };
         UxmlIntAttributeDescription m_spaceCount = new UxmlIntAttributeDescription() { name = "space-count", defaultValue = 1 };
         UxmlFloatAttributeDescription m_widthHeightRatio = new UxmlFloatAttributeDescription() { name = "width-height-ratio", defaultValue = 1f };
+        UxmlIntAttributeDescription m_polygonN = new UxmlIntAttributeDescription() { name = "polygon-n", defaultValue = 1 };
 
         public override IEnumerable<UxmlChildElementDescription> uxmlChildElementsDescription
         {
@@ -166,9 +169,10 @@ public class CircularGaugeCustomControl : VisualElement
             ate.FillCount = m_fillCount.GetValueFromBag(bag, cc);
             ate.SpaceCount = m_spaceCount.GetValueFromBag(bag, cc);
             ate.WidthHeightRatio = m_widthHeightRatio.GetValueFromBag(bag, cc);
+            ate.PolygonN = m_polygonN.GetValueFromBag(bag, cc);
 
             // Creating the hierarchy for the radial fill element
-            ate.name = "circular-gauge";
+            //ate.name = "circular-gauge";
             ate.Clear();
             VisualElement radialBoundary = new VisualElement() { name = "radial-boundary" };
             radialBoundary.Add(ate.RadialFill);
@@ -256,6 +260,10 @@ public class CircularGaugeCustomControl : VisualElement
                     for (int idx = 0; idx < squadNum; idx++)
                     {
                         float theta = angleRadUnit * idx + angleOffsetRad;
+                        if (FillDirection_ == FillDirection.AntiClockwise)
+                        {
+                            theta = -angleRadUnit * idx + angleOffsetRad;
+                        }
                         float outerRadiusByTheta = Radius;
                         float cosSqr = Mathf.Cos(theta) * Mathf.Cos(theta);
                         float sinSqr = Mathf.Sin(theta) * Mathf.Sin(theta);
@@ -294,6 +302,10 @@ public class CircularGaugeCustomControl : VisualElement
                     }
 
                     float theta2 = currentAngleRad + angleOffsetRad;
+                    if (FillDirection_ == FillDirection.AntiClockwise)
+                    {
+                        theta2 = -currentAngleRad + angleOffsetRad;
+                    }
                     float outerRadiusByTheta2 = Radius;
                     float cosSqr2 = Mathf.Cos(theta2) * Mathf.Cos(theta2);
                     float sinSqr2 = Mathf.Sin(theta2) * Mathf.Sin(theta2);
@@ -332,6 +344,10 @@ public class CircularGaugeCustomControl : VisualElement
                     for (int idx = 0; idx < squadNum; idx++)
                     {
                         float theta = angleRadUnit * idx + angleOffsetRad;
+                        if (FillDirection_ == FillDirection.AntiClockwise)
+                        {
+                            theta = Mathf.PI - theta;
+                        }
                         float outerRadiusByTheta;
                         float innerRadiusByTheta;
                         if (Mathf.Abs(Mathf.Sin(theta)) < Mathf.Abs(Mathf.Cos(theta)))
@@ -381,6 +397,10 @@ public class CircularGaugeCustomControl : VisualElement
                     }
 
                     float theta2 = currentAngleRad + angleOffsetRad;
+                    if (FillDirection_ == FillDirection.AntiClockwise)
+                    {
+                        theta2 = Mathf.PI - theta2;
+                    }
                     float outerRadiusByTheta2;
                     float innerRadiusByTheta2;
                     if (Mathf.Abs(Mathf.Sin(theta2)) < Mathf.Abs(Mathf.Cos(theta2)))
@@ -430,11 +450,14 @@ public class CircularGaugeCustomControl : VisualElement
                     for (int idx = 0; idx < squadNum; idx++)
                     {
                         float theta = angleRadUnit * idx + angleOffsetRad;
-                        float localTheta = theta%(Mathf.PI / 5f) - Mathf.PI / 10f;
-                        float outerRadiusByTheta = Radius / Mathf.Cos(localTheta) * Mathf.Cos(Mathf.PI / 10f);
-                        float cosSqr = Mathf.Cos(theta) * Mathf.Cos(theta);
-                        float sinSqr = Mathf.Sin(theta) * Mathf.Sin(theta);
-                        float innerRadiusByTheta = Radius / Mathf.Cos(localTheta) * Mathf.Cos(Mathf.PI / 10f) - Thickness;
+                        float localTheta = Mathf.Abs(theta%(Mathf.PI / (PolygonN/2f))) - Mathf.PI / PolygonN;
+                        if(FillDirection_ == FillDirection.AntiClockwise)
+                        {
+                            theta = Mathf.PI - theta;
+                            localTheta = Mathf.Abs((Mathf.PI-theta) % (Mathf.PI / (PolygonN / 2f))) - Mathf.PI / PolygonN;
+                        }
+                        float outerRadiusByTheta = Radius / Mathf.Cos(localTheta) * Mathf.Cos(Mathf.PI / PolygonN);
+                        float innerRadiusByTheta = outerRadiusByTheta - Thickness;
                         Vector3 innerCoord = new Vector3(Mathf.Cos(theta) * innerRadiusByTheta,
                                                             Mathf.Sin(theta) * innerRadiusByTheta, Vertex.nearZ);
                         Vector3 outerCoord = new Vector3(Mathf.Cos(theta) * outerRadiusByTheta,
@@ -469,12 +492,15 @@ public class CircularGaugeCustomControl : VisualElement
                     }
 
                     float theta2 = currentAngleRad + angleOffsetRad;
-                    float localTheta2 = theta2 % (Mathf.PI / 5f) - Mathf.PI / 10f;
+                    float localTheta2 = Mathf.Abs(theta2 % (Mathf.PI / (PolygonN / 2f))) - Mathf.PI / PolygonN;
+                    if (FillDirection_ == FillDirection.AntiClockwise)
+                    {
+                        theta2 = Mathf.PI - theta2;
+                        localTheta2 = Mathf.Abs((Mathf.PI - theta2) % (Mathf.PI / (PolygonN / 2f))) - Mathf.PI / PolygonN;
+                    }
 
-                    float outerRadiusByTheta2 = Radius / Mathf.Cos(localTheta2) * Mathf.Cos(Mathf.PI / 10f);
-                    float cosSqr2 = Mathf.Cos(theta2) * Mathf.Cos(theta2);
-                    float sinSqr2 = Mathf.Sin(theta2) * Mathf.Sin(theta2);
-                    float innerRadiusByTheta2 = Radius / Mathf.Cos(localTheta2) * Mathf.Cos(Mathf.PI / 10f) - Thickness;
+                    float outerRadiusByTheta2 = Radius / Mathf.Cos(localTheta2) * Mathf.Cos(Mathf.PI / PolygonN);
+                    float innerRadiusByTheta2 = outerRadiusByTheta2 - Thickness;
                     Vector3 innerCoord2 = new Vector3(Mathf.Cos(theta2) * innerRadiusByTheta2,
                                                             Mathf.Sin(theta2) * innerRadiusByTheta2, Vertex.nearZ);
                     Vector3 outerCoord2 = new Vector3(Mathf.Cos(theta2) * outerRadiusByTheta2,
@@ -514,13 +540,26 @@ public class CircularGaugeCustomControl : VisualElement
         {
             if ((idx) % (FillCount + SpaceCount) < FillCount)
             {
-                mwd.SetNextIndex((ushort)(idx * 2 + 0));
-                mwd.SetNextIndex((ushort)(idx * 2 + 1));
-                mwd.SetNextIndex((ushort)(idx * 2 + 3));
+                if(FillDirection_ == FillDirection.Clockwise)
+                {
+                    mwd.SetNextIndex((ushort)(idx * 2 + 0));
+                    mwd.SetNextIndex((ushort)(idx * 2 + 1));
+                    mwd.SetNextIndex((ushort)(idx * 2 + 3));
 
-                mwd.SetNextIndex((ushort)(idx * 2 + 0));
-                mwd.SetNextIndex((ushort)(idx * 2 + 3));
-                mwd.SetNextIndex((ushort)(idx * 2 + 2));
+                    mwd.SetNextIndex((ushort)(idx * 2 + 0));
+                    mwd.SetNextIndex((ushort)(idx * 2 + 3));
+                    mwd.SetNextIndex((ushort)(idx * 2 + 2));
+                }
+                else
+                {
+                    mwd.SetNextIndex((ushort)(idx * 2 + 3));
+                    mwd.SetNextIndex((ushort)(idx * 2 + 1));
+                    mwd.SetNextIndex((ushort)(idx * 2 + 0));
+
+                    mwd.SetNextIndex((ushort)(idx * 2 + 2));
+                    mwd.SetNextIndex((ushort)(idx * 2 + 3));
+                    mwd.SetNextIndex((ushort)(idx * 2 + 0));
+                }
             }
         }
     }
