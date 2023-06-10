@@ -79,7 +79,7 @@
     transition-timing-function: ease-in-out;
 }
 
-.LeftTab2Button {
+.LeftDiagnosisTabButton {
     height: 80px;
     width: 100%;
     background-color: rgba(188, 188, 188, 0);
@@ -92,7 +92,7 @@
     -unity-font-style: bold;
 }
 
-.LeftTab2Button--Selected {
+.LeftDiagnosisTabButton--Selected {
     background-color: rgb(69, 70, 77);
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
@@ -124,4 +124,54 @@
     transition-property: all;
     transition-timing-function: ease-in-out;
     transition-duration: 0.3s;
+}
+
+.LeftDiagnosisTab--Show {
+    flex-grow: 1;
+    background-color: rgba(0, 0, 0, 0);
+    position: absolute;
+    width: 240px;
+    height: 95%;
+    margin-top: 0;
+    top: 5%;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    justify-content: flex-start;
+    align-items: center;
+    color: rgb(0, 0, 0);
+    left: 100px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 31px;
+    padding-bottom: 8px;
+    border-right-color: rgb(255, 255, 255);
+    border-right-width: 2px;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in-out;
+}
+
+.LeftDiagnosisTab--Hide {
+    flex-grow: 1;
+    background-color: rgba(0, 0, 0, 0);
+    position: absolute;
+    width: 240px;
+    height: 95%;
+    margin-top: 0;
+    top: 5%;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    justify-content: flex-start;
+    align-items: center;
+    color: rgb(0, 0, 0);
+    left: -240px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 31px;
+    padding-bottom: 8px;
+    border-right-color: rgb(255, 255, 255);
+    border-right-width: 2px;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in-out;
 }

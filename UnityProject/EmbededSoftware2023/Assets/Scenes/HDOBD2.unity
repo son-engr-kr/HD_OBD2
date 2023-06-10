@@ -208,8 +208,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 121457550}
-  m_LocalRotation: {x: 0.012602037, y: -5.3765675e-10, z: 6.7761075e-12, w: 0.9999206}
-  m_LocalPosition: {x: 0, y: 0, z: -9.52}
+  m_LocalRotation: {x: 0.22696778, y: -0.66969067, z: 0.22696774, w: 0.6696908}
+  m_LocalPosition: {x: 7.6, y: 5.58, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -810,7 +810,7 @@ MonoBehaviour:
   m_Priority: 10
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 1550069567}
-  m_Follow: {fileID: 979846793}
+  m_Follow: {fileID: 2065335649}
   m_Lens:
     FieldOfView: 26.1
     OrthographicSize: 5
@@ -837,8 +837,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 951125108}
-  m_LocalRotation: {x: 0.012602037, y: -5.3765675e-10, z: 6.7761075e-12, w: 0.9999206}
-  m_LocalPosition: {x: 0, y: 0, z: -9.52}
+  m_LocalRotation: {x: 0.22696778, y: -0.66969067, z: 0.22696774, w: 0.6696908}
+  m_LocalPosition: {x: 7.6, y: 5.58, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -861,6 +861,7 @@ MonoBehaviour:
   FrontSideViewPositionObject: {fileID: 1538182871}
   TopViewPositionObject: {fileID: 225745924}
   SideViewPositionObject: {fileID: 979846792}
+  RearTopViewPositionObject: {fileID: 2065335648}
 --- !u!1 &979846792
 GameObject:
   m_ObjectHideFlags: 0
@@ -1007,6 +1008,7 @@ Transform:
   - {fileID: 979846793}
   - {fileID: 1538182872}
   - {fileID: 225745925}
+  - {fileID: 2065335649}
   m_Father: {fileID: 1192964060}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1513,3 +1515,34 @@ MonoBehaviour:
   m_YawDamping: 3.4
   m_RollDamping: 0
   m_AngularDamping: 0
+--- !u!1 &2065335648
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2065335649}
+  m_Layer: 0
+  m_Name: RearTopViewObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2065335649
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065335648}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.6, y: 5.58, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1197095486}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

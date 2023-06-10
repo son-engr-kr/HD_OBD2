@@ -58,16 +58,19 @@
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="LeftTab" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); position: absolute; width: 100px; height: 95%; margin-top: 0; top: 5%; margin-left: 0; margin-right: 0; margin-bottom: 0; justify-content: center; align-items: center; color: rgb(0, 0, 0); transition-property: position; border-left-color: rgba(255, 255, 255, 0); border-right-color: rgb(255, 255, 255); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); border-left-width: 0; border-right-width: 2px;">
-        <ui:Button display-tooltip-when-elided="true" name="Button" class="LeftTabButton LeftTabButton--Selected" />
-        <ui:Button display-tooltip-when-elided="true" name="Button" class="LeftTabButton" />
+        <ui:Button display-tooltip-when-elided="true" name="ButtonMain" class="LeftTabButton LeftTabButton--Selected" />
+        <ui:Button display-tooltip-when-elided="true" name="ButtonDiagnosis" class="LeftTabButton" />
     </ui:VisualElement>
-    <ui:VisualElement name="LeftTab2" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); position: absolute; width: 240px; height: 95%; margin-top: 0; top: 5%; margin-left: 0; margin-right: 0; margin-bottom: 0; justify-content: flex-start; align-items: center; color: rgb(0, 0, 0); left: 100px; padding-left: 8px; padding-right: 8px; padding-top: 31px; padding-bottom: 8px; border-right-color: rgb(255, 255, 255); border-right-width: 2px;">
-        <ui:Button text="Car Status" display-tooltip-when-elided="true" name="ButtonCarStatus" class="LeftTab2Button" />
-        <ui:Button text="DTC" display-tooltip-when-elided="true" name="ButtonDTC" class="LeftTab2Button" />
-        <ui:Button text="Test1" display-tooltip-when-elided="true" class="LeftTab2Button" />
-        <ui:Button text="Test2" display-tooltip-when-elided="true" class="LeftTab2Button" />
-        <ui:Button text="Test3" display-tooltip-when-elided="true" class="LeftTab2Button" />
-        <ui:Button text="Test4" display-tooltip-when-elided="true" class="LeftTab2Button" />
+    <ui:VisualElement name="LeftDiagnosisTab" class="LeftDiagnosisTab--Show LeftDiagnosisTab--Hide">
+        <ui:Button text="Car Status" display-tooltip-when-elided="true" name="ButtonCarStatus" class="LeftTab2Button LeftDiagnosisTabButton" />
+        <ui:Button text="DTC" display-tooltip-when-elided="true" name="ButtonDTC" class="LeftTab2Button LeftDiagnosisTabButton" />
     </ui:VisualElement>
     <ui:VisualElement name="TopBar" style="flex-grow: 1; background-color: rgb(0, 0, 0); position: absolute; height: 5%; width: 100%;" />
+    <ui:VisualElement name="cluster" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+        <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); position: absolute; left: 64px; top: 677px; width: 700px; height: 300px; align-items: stretch; align-self: auto;">
+            <RPMGaugeCustomControl name="rpm-gauge" width="700" height="300" start-color="#3F7D00FF" end-color="#FF5900FF" value="0.54" thickness="51.5" style="position: absolute; top: 0; left: 0;" />
+            <ui:Label tabindex="-1" text="1600" display-tooltip-when-elided="true" name="rpm-label" style="position: absolute; width: 50%; height: 50%; left: 25%; top: 25%; color: rgb(255, 124, 0); font-size: 118px; -unity-text-align: middle-center; -unity-font-style: bold-and-italic;" />
+            <CircularGaugeCustomControl name="circular-gauge" width="700" height="900" start-color="#FFE98DFF" end-color="#FF0000FF" angle-offset="129.8" value="0.61" thickness="137.4" gauge-shape="Rectangle" space-count="1" fill-count="3" angle-segment-unit-degree="2" fill-direction="AntiClockwise" width-height-ratio="1" is-blink="false" angle-stroke-degree="312.8" style="position: absolute; top: -375px; left: 1160px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
 </ui:UXML>

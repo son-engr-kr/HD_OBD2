@@ -10,6 +10,7 @@ public class CarViewVCamController : MonoBehaviour
     [SerializeField] GameObject FrontSideViewPositionObject;
     [SerializeField] GameObject TopViewPositionObject;
     [SerializeField] GameObject SideViewPositionObject;
+    [SerializeField] GameObject RearTopViewPositionObject;
     private void Awake()
     {
         _instance = this;
@@ -19,7 +20,8 @@ public class CarViewVCamController : MonoBehaviour
     {
         TOP,
         FRONT_SIDE,
-        SIDE
+        SIDE,
+        REAR_TOP
     }
     static public void ChangeView(VIEW_POSITION viewPosition)
     {
@@ -39,6 +41,11 @@ public class CarViewVCamController : MonoBehaviour
             case VIEW_POSITION.SIDE:
                 {
                     _instance._VCam.Follow = _instance.SideViewPositionObject.transform;
+                    break;
+                }
+            case VIEW_POSITION.REAR_TOP:
+                {
+                    _instance._VCam.Follow = _instance.RearTopViewPositionObject.transform;
                     break;
                 }
         }
