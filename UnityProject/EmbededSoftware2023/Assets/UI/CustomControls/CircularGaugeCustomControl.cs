@@ -430,11 +430,11 @@ public class CircularGaugeCustomControl : VisualElement
                     for (int idx = 0; idx < squadNum; idx++)
                     {
                         float theta = angleRadUnit * idx + angleOffsetRad;
-                        float localTheta = theta%(Mathf.PI / 5);
-                        float outerRadiusByTheta = Radius * Mathf.Cos(localTheta);
+                        float localTheta = theta%(Mathf.PI / 5f) - Mathf.PI / 10f;
+                        float outerRadiusByTheta = Radius / Mathf.Cos(localTheta) * Mathf.Cos(Mathf.PI / 10f);
                         float cosSqr = Mathf.Cos(theta) * Mathf.Cos(theta);
                         float sinSqr = Mathf.Sin(theta) * Mathf.Sin(theta);
-                        float innerRadiusByTheta = Radius * Mathf.Cos(localTheta) - Thickness;
+                        float innerRadiusByTheta = Radius / Mathf.Cos(localTheta) * Mathf.Cos(Mathf.PI / 10f) - Thickness;
                         Vector3 innerCoord = new Vector3(Mathf.Cos(theta) * innerRadiusByTheta,
                                                             Mathf.Sin(theta) * innerRadiusByTheta, Vertex.nearZ);
                         Vector3 outerCoord = new Vector3(Mathf.Cos(theta) * outerRadiusByTheta,
@@ -469,12 +469,12 @@ public class CircularGaugeCustomControl : VisualElement
                     }
 
                     float theta2 = currentAngleRad + angleOffsetRad;
-                    float localTheta2 = theta2 % (Mathf.PI / 5);
+                    float localTheta2 = theta2 % (Mathf.PI / 5f) - Mathf.PI / 10f;
 
-                    float outerRadiusByTheta2 = Radius * Mathf.Cos(localTheta2);
+                    float outerRadiusByTheta2 = Radius / Mathf.Cos(localTheta2) * Mathf.Cos(Mathf.PI / 10f);
                     float cosSqr2 = Mathf.Cos(theta2) * Mathf.Cos(theta2);
                     float sinSqr2 = Mathf.Sin(theta2) * Mathf.Sin(theta2);
-                    float innerRadiusByTheta2 = Radius * Mathf.Cos(localTheta2) - Thickness;
+                    float innerRadiusByTheta2 = Radius / Mathf.Cos(localTheta2) * Mathf.Cos(Mathf.PI / 10f) - Thickness;
                     Vector3 innerCoord2 = new Vector3(Mathf.Cos(theta2) * innerRadiusByTheta2,
                                                             Mathf.Sin(theta2) * innerRadiusByTheta2, Vertex.nearZ);
                     Vector3 outerCoord2 = new Vector3(Mathf.Cos(theta2) * outerRadiusByTheta2,
