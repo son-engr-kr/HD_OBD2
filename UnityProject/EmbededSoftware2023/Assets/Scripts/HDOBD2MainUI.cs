@@ -218,6 +218,9 @@ public class HDOBD2MainUI : MonoBehaviour
         }
         _SpeedometerGaugeCustomControl.Value = (speed / 240);
 
+        CarViewVCamController.SetCameraNoise(speed/240, speed/60);
+
+
     }
 
     void UIStatusMode()

@@ -7,6 +7,7 @@ public class CarViewVCamController : MonoBehaviour
     static CarViewVCamController _instance;
 
     Cinemachine.CinemachineVirtualCamera _VCam;
+    Cinemachine.CinemachineBasicMultiChannelPerlin _Noise;
     [SerializeField] GameObject FrontSideViewPositionObject;
     [SerializeField] GameObject TopViewPositionObject;
     [SerializeField] GameObject SideViewPositionObject;
@@ -15,6 +16,8 @@ public class CarViewVCamController : MonoBehaviour
     {
         _instance = this;
         _VCam = GetComponent<Cinemachine.CinemachineVirtualCamera>();
+        _Noise = _VCam.GetCinemachineComponent<Cinemachine.CinemachineBasicMultiChannelPerlin>();
+        _Noise.m_AmplitudeGain = 0;
     }
     public enum VIEW_POSITION
     {
@@ -49,5 +52,10 @@ public class CarViewVCamController : MonoBehaviour
                     break;
                 }
         }
+    }
+    static public void SetCameraNoise(float amplitudeGain, float freqGain)
+    {
+        _instance._Noise.m_AmplitudeGain = amplitudeGain;
+        _instance._Noise.m_FrequencyGain = freqGain;
     }
 }
