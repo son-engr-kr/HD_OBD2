@@ -477,7 +477,7 @@ void receivePID(unsigned char __pid)
       case PID_VEHICLE_SPEED:
         if(rxBuf[2] == PID_VEHICLE_SPEED){
           uint8_t Vehicle_Speed = rxBuf[3];
-          Serial.print("Vehicle Speed (km/h): ");
+          Serial.print("OBD2____,STATUS,VEHICLE_SPEED,");
           Serial.println(Vehicle_Speed, DEC);
         }
       break;
@@ -576,6 +576,14 @@ void loop()
   receivePID(PID_ENGINE_RPM);
 
   //abitrary loop delay
+  delay(40);
+
+  sendPID (PID_VEHICLE_SPEED);
+
+  delay(40); //to allow time for ECU to reply
+
+  receivePID(PID_VEHICLE_SPEED);
+  
   delay(40);
 
   RequestStoredDTC();
