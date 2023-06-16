@@ -108,7 +108,7 @@ void ClearDTCandMIL(){
 
 void RequestStoredDTC()
 {
-  unsigned char tmp[8] = {0x02, 0x03, 0x01, 0, 0, 0, 0, 0};
+  unsigned char tmp[8] = {0x01, 0x03, 0x00, 0, 0, 0, 0, 0};
 
    byte sndStat = CAN0.sendMsgBuf(CAN_ID_PID, 0, 8, tmp);
 
@@ -135,14 +135,14 @@ void ReceiveStoredDTC()
       Serial.print(msgString);
     }
     Serial.println("");
-
+    uint8_t secondCode = (rxBuf[3]>>4) & 0x3;
+    uint8_t thirdCode = (rxBuf[3]) & 0xF;
+    uint8_t fourthCode = (rxBuf[4]>>4) & 0xF;
+    uint8_t fifthCode =  (rxBuf[4]) & 0xF;
     switch ((rxBuf[3]>>6)& 0x3){
-      uint8_t secondCode = (rxBuf[3]>>4) & 0x3;
-      uint8_t thirdCode = (rxBuf[3]) & 0xF;
-      uint8_t fourthCode = (rxBuf[4]>>4) & 0xF;
-      uint8_t fifthCode =  (rxBuf[4]) & 0xF;
       
       case 0x00:
+        {
         // Serial.print("DTC code is : P");
         // Serial.print(secondCode, DEC); //DTC에 각 자리수마다 9를 넘어가는 수가 없어서 10진법으로 해도 상관없을듯.
         // Serial.print(thirdCode, DEC); 
@@ -161,6 +161,7 @@ void ReceiveStoredDTC()
         // "P",secondCode,thirdCode,fourthCode,fifthCode,0 );
         // Serial.println(buffer);
         break;
+        }
       case 0x01:
         // Serial.print("OBD2____,DTC,C");
         // Serial.print(secondCode, DEC);
@@ -168,12 +169,14 @@ void ReceiveStoredDTC()
         // Serial.print(fourthCode, DEC);
         // Serial.print(fifthCode, DEC);
         // Serial.println(",0");
+        {
         DTCFirstCode = 'C';
         PrintOBD2DTC(OBD2_HEADER,OBD2_CATEGORY_DTC,DTCFirstCode,secondCode,thirdCode,fourthCode,fifthCode,0);
         // sprintf(buffer,"%s,%s,%s%d%d%d%d,%d",OBD2_HEADER,OBD2_CATEGORY_DTC,
         // "C",secondCode,thirdCode,fourthCode,fifthCode,0 );
         // Serial.println(buffer);
         break;
+        }
       case 0x02:
         // Serial.print("OBD2____,DTC,B");
         // Serial.print(secondCode, DEC);
@@ -181,12 +184,14 @@ void ReceiveStoredDTC()
         // Serial.print(fourthCode, DEC);
         // Serial.print(fifthCode, DEC);
         // Serial.println(",0");
+        {
         DTCFirstCode = 'B';
         PrintOBD2DTC(OBD2_HEADER,OBD2_CATEGORY_DTC,DTCFirstCode,secondCode,thirdCode,fourthCode,fifthCode,0);
         // sprintf(buffer,"%s,%s,%s%d%d%d%d,%d",OBD2_HEADER,OBD2_CATEGORY_DTC,
         // "B",secondCode,thirdCode,fourthCode,fifthCode,0 );
         // Serial.println(buffer);
         break;
+        }
       case 0x03:
         // Serial.print("OBD2____,DTC,U");
         // Serial.print(secondCode, DEC);
@@ -194,15 +199,19 @@ void ReceiveStoredDTC()
         // Serial.print(fourthCode, DEC);
         // Serial.print(fifthCode, DEC);
         // Serial.println(",0");
+        {
         DTCFirstCode = 'U';
         PrintOBD2DTC(OBD2_HEADER,OBD2_CATEGORY_DTC,DTCFirstCode,secondCode,thirdCode,fourthCode,fifthCode,0);
         // sprintf(buffer,"%s,%s,%s%d%d%d%d,%d",OBD2_HEADER,OBD2_CATEGORY_DTC,
         // "U",secondCode,thirdCode,fourthCode,fifthCode,0 );
         // Serial.println(buffer);
         break;
+        }
       default:
+        {
         Serial.println("OBD2____,DTC,DEFAULT,0");
         break;
+        }
         }
 
           // 진단 코드가 두개일때 
@@ -570,49 +579,49 @@ void loop()
 {
   
   // request coolant temp
-  sendPID(PID_COOLANT_TEMP);
+  // sendPID(PID_COOLANT_TEMP);
 
-  delay(40); //to allow time for ECU to reply
+  // delay(40); //to allow time for ECU to reply
 
-  receivePID(PID_COOLANT_TEMP);
-
-
-  // request engine speed
-  sendPID(PID_ENGINE_RPM);
-
-  delay(40); //to allow time for ECU to reply
-
-  receivePID(PID_ENGINE_RPM);
-
-  // abitrary loop delay
-  delay(40);
+  // receivePID(PID_COOLANT_TEMP);
 
 
-  sendPID(PID_VEHICLE_SPEED);
+  // // request engine speed
+  // sendPID(PID_ENGINE_RPM);
 
-  delay(40); //to allow time for ECU to reply
+  // delay(40); //to allow time for ECU to reply
 
-  receivePID(PID_VEHICLE_SPEED);
+  // receivePID(PID_ENGINE_RPM);
+
+  // // abitrary loop delay
+  // delay(40);
+
+
+  // sendPID(PID_VEHICLE_SPEED);
+
+  // delay(40); //to allow time for ECU to reply
+
+  // receivePID(PID_VEHICLE_SPEED);
   
-  delay(40);
+  // delay(40);
 
 
-  sendPID(PID_ENGINE_FUEL_RATE);
+  // sendPID(PID_ENGINE_FUEL_RATE);
 
-  delay(40); //to allow time for ECU to reply
+  // delay(40); //to allow time for ECU to reply
 
-  receivePID(PID_ENGINE_FUEL_RATE);
+  // receivePID(PID_ENGINE_FUEL_RATE);
   
-  delay(40);
+  // delay(40);
 
 
-  sendPID (PID_FUEL_LEVEL);
+  // sendPID (PID_FUEL_LEVEL);
 
-  delay(40); //to allow time for ECU to reply
+  // delay(40); //to allow time for ECU to reply
 
-  receivePID(PID_FUEL_LEVEL);
+  // receivePID(PID_FUEL_LEVEL);
   
-  delay(40);
+  // delay(40);
 
 
 
