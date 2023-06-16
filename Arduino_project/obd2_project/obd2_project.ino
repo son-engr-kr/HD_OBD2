@@ -124,8 +124,7 @@ void RequestStoredDTC()
 }
 void ReceiveStoredDTC()
 {
-  if (!digitalRead(CAN0_INT)) 
-  {                      // If CAN0_INT pin is low, read receive buffer
+  if (!digitalRead(CAN0_INT)) {                      // If CAN0_INT pin is low, read receive buffer
     CAN0.readMsgBuf(&rxId, &len, rxBuf);      // Read data: len = data length, buf = data byte(s)
 
     sprintf(msgString, "Standard ID: 0x%.3lX, DLC: %1d, Data: ", rxId, len);
@@ -307,117 +306,153 @@ void receivePID(unsigned char __pid)
     }
     
 
-    switch (__pid) {
+    switch (rxBuf[2]) {
       case PID_ENGINE_REF_TORQUE:
+        {
           uint32_t temp =  256 * rxBuf[3] + rxBuf[4];
           Serial.print("Engine Reference Torque (Nm) : ");
           Serial.println(temp, DEC);
-      break;
+          break;
+        }
 
       case PID_ENGINE_TORQUE_PERCENTAGE:
+        {
           float temp =  rxBuf[3] - 125;
           Serial.print("Actual Engine Percent Torque (%) : ");
           Serial.println(temp, DEC);
-      break;
+          break;
+        }
 
       case PID_ENGINE_FUEL_RATE:
+        {
           uint32_t temp = (256 * rxBuf[3] + rxBuf[4])/20;
           Serial.print("Engine Fuel Rate (L/h) : ");
           Serial.println(temp, DEC);
           PrintOBD2Data(OBD2_HEADER,OBD2_CATEGORY_STATUS,PID_ENGINE_FUEL_RATE,temp);
-      break;
+          break;
+        }
 
       case PID_ENGINE_OIL_TEMP:
+        {
           float temp = rxBuf[3] - 40;
           Serial.print("Engine Oil Temperature (degC) : ");
           Serial.println(temp, DEC);
-      break;
+          break;
+        }
 
       case PID_HYBRID_BATTERY_PERCENTAGE:
+        {
           float temp = (100 * rxBuf[3]) / 255;
           Serial.print("Hybrid Battery Percentage (%) : ");
           Serial.println(temp, DEC);
-      break;
+          break;
+        }
 
       case PID_TIME_SINCE_CODES_CLEARED:
+        {
           uint32_t temp = 256 * rxBuf[3] + rxBuf[4];
           Serial.print("Time Since Trouble Code Cleared (min) : ");
           Serial.println(temp, DEC);
-      break;
+          break;
+        }
 
       case PID_TIME_WITH_MIL:
+        {
           uint32_t temp = 256 * rxBuf[3] + rxBuf[4];
           Serial.print("Time With MIL (min) : ");
           Serial.println(temp, DEC);
-      break;
+          break;
+        }
 
       case PID_AMBIENT_TEMP:
+        {
           float temp = rxBuf[3] - 40 ;
           Serial.print("Ambient Temperature (degC) : ");
           Serial.println(temp, DEC);
-      break;
+          break;
+        }
 
       case PID_ABSOLUTE_ENGINE_LOAD:
+        {
           uint32_t temp =100 * (256 * rxBuf[3] + rxBuf[4])/255;
           Serial.print("Absolute Engine Load (%) : ");
           Serial.println(temp, DEC);
-      break;
+          break;
+        }
 
       case PID_CONTROL_MODULE_VOLTAGE:
+        {
           float temp =  (256 * rxBuf[3] + rxBuf[4])/1000;
           Serial.print("Control Module Voltage (V) : ");
           Serial.println(temp, DEC);
-      break;
+          break;
+        }
 
       case PID_BAROMETRIC:
+        {
           uint16_t temp =  rxBuf[3];
           Serial.print("Barometric Pressure (kPa) : ");
           Serial.println(temp, DEC);
-      break;
+          break;
+        }
 
       case PID_DISTANCE:
+        {
           uint32_t temp = (256 * rxBuf[3]) + rxBuf[4];
           Serial.print("Distance Traveled (km) : ");
           Serial.println(temp, DEC);
-      break;
+          break;
+        }
 
       case PID_WARMS_UPS:
+        {
           uint16_t temp = rxBuf[3];
           Serial.print("Engine Temperature : ");
           Serial.println(temp, DEC);
-      break;
+          break;
+        }
       
       case PID_FUEL_LEVEL:
+        {
           float temp = (100 * rxBuf[3])/255;
           Serial.print("OBD2____,STATUS,FUEL_LEVEL,");
           Serial.println(temp, DEC);
-      break;
+          break;
+        }
 
       case PID_EGR_ERROR:
+        {
           float temp = (100 * rxBuf[3])/128-100;
           Serial.print("EGR Error (%): ");
           Serial.println(temp, DEC);
-      break;
+          break;
+        }
 
       case PID_COMMANDED_EGR:
+        {
           float temp = (100 * rxBuf[3])/255;
           Serial.print("Commanded EGR (%): ");
           Serial.println(temp, DEC);
-      break;
-
+          break;
+        }
       case PID_DISTANCE_WITH_MIL:
+        {
           uint32_t temp = 256 * rxBuf[3] + rxBuf[4];
           Serial.print("Distance traveled with MIL on (km): ");
           Serial.println(temp, DEC);
-      break;
+          break;
+        }
       
       case PID_RUNTIME:
+        {
           uint32_t temp = 256 * rxBuf[3] + rxBuf[4];
           Serial.print("Drive RunTime (s): ");
           Serial.println(temp, DEC);
-      break;
+          break;
+        }
 
       case PID_AUX_INPUT:
+        {
           uint8_t temp = rxBuf[3];
           if(rxBuf[3] == 1){
             Serial.println("AUX is in use.");
@@ -425,52 +460,66 @@ void receivePID(unsigned char __pid)
           else{
             Serial.println("AUX is not in use.");
           } 
-      break;
+          break;
+        }
 
       case PID_MAF_FLOW:
+        {
           int16_t temp = (256 * rxBuf[3] + rxBuf[4]) / 4; // 음수값이 있어서 int8_t사용
           Serial.print("MAP Flow (degC): ");
           Serial.println(temp, DEC);
-      break;
+          break;
+        }
 
       case PID_TIMING_ADVANCE:
+        {
           int8_t temp = rxBuf[3]/2 - 64; // 음수값이 있어서 int8_t사용
           Serial.print("Timing Advance (TDC): ");
           Serial.println(temp, DEC);
-      break;
+          break;
+        }
 
       case PID_VEHICLE_SPEED:
+        {
           uint8_t Vehicle_Speed = rxBuf[3];
           Serial.print("OBD2____,STATUS,VEHICLE_SPEED,");
           Serial.println(Vehicle_Speed,DEC);
-      break;
-
+          break;
+        }
       case PID_FUEL_PRESSURE:
+        {
           uint16_t Fuel_Pressure = 3 * rxBuf[3];
           Serial.print("Fuel Pressure (kPa): ");
           Serial.println(Fuel_Pressure,DEC);
-      break;
+          break;
+        }
 
       case PID_ENGINE_LOAD:
+        {
           float Engine_Load = ( 100 * rxBuf[3] ) / 255;
           Serial.print("Engine Load (%): ");
           Serial.println(Engine_Load,DEC);
-      break;
+          break;
+        }
 
       case PID_COOLANT_TEMP:
+        {
           uint8_t temp;
           temp = rxBuf[3] - 40;
           Serial.print("OBD2____,STATUS,COOLANT_TEMP,");
           Serial.println(temp,DEC);
-      break;
+          break;
+        }
 
       case PID_ENGINE_RPM:
+        {
           uint16_t rpm = ((256 * rxBuf[3]) + rxBuf[4]) / 4;;
           // Serial.print("Engine Speed (rpm): ");
           // Serial.println(rpm, DEC);
           Serial.print("OBD2____,STATUS,RPM,");
           Serial.println(rpm,DEC);
-      break;
+          break;
+        }
 
 
 
@@ -510,6 +559,7 @@ void setup()
   Serial.println("Sending and Receiving OBD-II_PIDs Example...");
 
 
+
   // Serial.println("OBD2____,STATUS,Test,0");
   // Serial.println("OBD2____,STATUS,RPM,1234");
   // Serial.println("OBD2____,STATUS,COOLANT_TEMP,56");
@@ -519,7 +569,7 @@ void setup()
 void loop()
 {
   
-  //request coolant temp
+  // request coolant temp
   sendPID(PID_COOLANT_TEMP);
 
   delay(40); //to allow time for ECU to reply
@@ -527,14 +577,14 @@ void loop()
   receivePID(PID_COOLANT_TEMP);
 
 
-  //request engine speed
+  // request engine speed
   sendPID(PID_ENGINE_RPM);
 
   delay(40); //to allow time for ECU to reply
 
   receivePID(PID_ENGINE_RPM);
 
-  //abitrary loop delay
+  // abitrary loop delay
   delay(40);
 
 
@@ -574,9 +624,9 @@ void loop()
 
   delay(40);
 
-  ClearDTCandMIL();
+  // ClearDTCandMIL();
 
 
-  delay(500);
+  // delay(500);
 
 }
