@@ -84,7 +84,7 @@ void PrintOBD2DTC(char* HEADER, char* CATEGORY,char char1, int num2, int num3, i
 }
 
 void ClearDTCandMIL(){
-  unsigned char tmp[8] = {0x02, 0x04, 0x01, 0, 0, 0, 0, 0};
+  unsigned char tmp[8] = {0x01, 0x04, 0x00, 0, 0, 0, 0, 0};
 
   byte sndStat = CAN0.sendMsgBuf(CAN_ID_PID, 0, 8, tmp);
 
