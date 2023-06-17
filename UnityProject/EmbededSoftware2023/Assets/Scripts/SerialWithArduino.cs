@@ -9,6 +9,7 @@ using UnityEngine.Android;
 public class SerialWithArduino : MonoBehaviour
 {
     SerialPort _SerialPort;
+    System.Threading.Thread _SerialCommunicationThread;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,9 +38,9 @@ public class SerialWithArduino : MonoBehaviour
         {
             Debug.Log($"portName: {portName}");
 #if UNITY_EDITOR
-            if (portName.Contains("COM3"))
+            if (portName.Contains("COM4"))
 #else
-            if (portName.Contains("COM3"))
+            if (portName.Contains("COM4"))
 #endif
             {
                 serialPortName = portName;
@@ -91,15 +92,16 @@ public class SerialWithArduino : MonoBehaviour
             }
         }
 
-        System.Threading.Thread serialCommunicationThread = new System.Threading.Thread(SerialCommunicationThread);
-        serialCommunicationThread.Start();
+        _SerialCommunicationThread = new System.Threading.Thread(SerialCommunicationThread);
+        _SerialCommunicationThread.Start();
     }
     int idx = 0;
     void SerialCommunicationThread()
     {
+        float rpmValueForTest = 0;
         while (true)
         {
-            HDOBD2MainUI.UpdatePIDStatus("test", $"{idx++}");
+            //HDOBD2MainUI.UpdatePIDStatus("test", $"{idx++}");
             if (_SerialPort != null)
             {
                 var res = _SerialPort.ReadLine();
@@ -110,36 +112,49 @@ public class SerialWithArduino : MonoBehaviour
                     if (header == "OBD2____")
                     {
                         var resSplit = res.Split(",");
-                        string category = resSplit[1];
-                        string code = resSplit[2];
-                        string value = resSplit[3];
-                        switch (category)
+                        if(resSplit.Length >= 3)
                         {
-                            case "STATUS":
-                                {
-                                    HDOBD2MainUI.UpdatePIDStatus(code, value);
-                                    //switch (pidName)
-                                    //{
-                                    //    case "RPM":
-                                    //        {
+                            string category = resSplit[1];
+                            string code = resSplit[2];
+                            string value = resSplit[3];
+                            switch (category)
+                            {
+                                case "STATUS":
+                                    {
+                                        HDOBD2MainUI.PrintlnDetailDebugLabel($"status receive:{code}-{value}");
 
-                                    //            break;
-                                    //        }
-                                    //    case "COOLANT_TEMP":
-                                    //        {
+                                        HDOBD2MainUI.UpdatePIDStatus(code, value);
+                                        //switch (pidName)
+                                        //{
+                                        //    case "RPM":
+                                        //        {
 
-                                    //            break;
-                                    //        }
-                                    //}
-                                    break;
-                                }
-                            case "DTC":
-                                {
-                                    HDOBD2MainUI.UpdateDTC(code);
+                                        //            break;
+                                        //        }
+                                        //    case "COOLANT_TEMP":
+                                        //        {
 
-                                    break;
-                                }
+                                        //            break;
+                                        //        }
+                                        //}
+                                        break;
+                                    }
+                                case "DTC":
+                                    {
+                                        HDOBD2MainUI.PrintlnDetailDebugLabel($"DTC receive:{code}-{value}");
+
+                                        HDOBD2MainUI.UpdateDTC(code);
+
+                                        break;
+                                    }
+                            }
                         }
+                        else
+                        {
+                            HDOBD2MainUI.PrintlnDetailDebugLabel($"packet split by ',' result length < 3: {res}");
+
+                        }
+
 
 
 
@@ -156,20 +171,36 @@ public class SerialWithArduino : MonoBehaviour
                     }
                     else
                     {
-                        HDOBD2MainUI.PrintlnDebugLabel($"{_SerialPort.PortName}: {res}");
+                        HDOBD2MainUI.PrintlnDetailDebugLabel($"{_SerialPort.PortName}: {res}");
                     }
                 }
             }
             else
             {
+                HDOBD2MainUI.PrintlnDetailDebugLabel($"rpmValueForTest:{rpmValueForTest}");
+                HDOBD2MainUI.UpdatePIDStatus("RPM", $"{rpmValueForTest}");
+                HDOBD2MainUI.WriteLog("log test", "title test", $"{rpmValueForTest}");
+                rpmValueForTest += 100;
+                if(rpmValueForTest > 5000)
+                {
+                    rpmValueForTest = 0;
+                }
+                System.Threading.Thread.Sleep(200);
+
+
                 //foreach (var portName in SerialPort.GetPortNames())
                 //{
                 //    HDOBD2MainUI.DebugLabel($"portName: {portName}");
                 //}
             }
-            System.Threading.Thread.Sleep(100);
+            System.Threading.Thread.Sleep(1);
         }
 
 
+    }
+
+    private void OnDestroy()
+    {
+        _SerialCommunicationThread?.Abort();
     }
 }

@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -17,7 +19,6 @@ public class HDOBD2MainUI : MonoBehaviour
     //    }
     //}
     static HDOBD2MainUI _instance;
-    Label _DebugLabel;
     VisualElement _CarStatusFrame;
     VisualElement _DTCFrame;
     VisualElement _CarViewFrame;
@@ -27,6 +28,8 @@ public class HDOBD2MainUI : MonoBehaviour
     VisualElement _LeftTab;
         Button _ButtonMainDashboard;
         Button _ButtonDiagnosis;
+        Button _ButtonSetting;
+        Button _ButtonDebug;
 
     VisualElement _LeftDiagnosisTab;
         Button _ButtonCarStatus;
@@ -46,6 +49,14 @@ public class HDOBD2MainUI : MonoBehaviour
     Label _LabelRpm;
     CircularGaugeCustomControl _SpeedometerGaugeCustomControl;
     Label _LabelSpeed;
+    CircularGaugeCustomControl _FuelLevelGaugeCustomControl;
+    Label _LabelFuelLevel;
+
+    VisualElement _DebugFrame;
+        Label _LabelDebug;
+        Label _LabelDebugDetail;
+        Label _LabelDebugDetailCapture;
+        Button _ButtonCaptureDebugDetail;
     void Awake()
     {
         QualitySettings.vSyncCount = 0;
@@ -53,8 +64,6 @@ public class HDOBD2MainUI : MonoBehaviour
 
         _instance = this;
         var root = GetComponent<UIDocument>().rootVisualElement;
-
-        _DebugLabel = root.Q<Label>("DebugLabel");
 
         _CarStatusFrame = root.Q<VisualElement>("CarStatusFrame");
         _DTCFrame = root.Q<VisualElement>("DTCFrame");
@@ -67,7 +76,9 @@ public class HDOBD2MainUI : MonoBehaviour
 
         _ButtonMainDashboard = _LeftTab.Q<Button>("ButtonMain");
         _ButtonDiagnosis = _LeftTab.Q<Button>("ButtonDiagnosis");
-        var leftTabButtonList = new List<Button>() { _ButtonMainDashboard, _ButtonDiagnosis };
+        _ButtonSetting = _LeftTab.Q<Button>("ButtonSetting");
+        _ButtonDebug = _LeftTab.Q<Button>("ButtonDebug");
+        var leftTabButtonList = new List<Button>() { _ButtonMainDashboard, _ButtonDiagnosis, _ButtonSetting, _ButtonDebug };
         foreach (var dstButton in leftTabButtonList)
         {
             dstButton.RegisterCallback<ClickEvent>((ClickEvent evt) =>
@@ -82,11 +93,15 @@ public class HDOBD2MainUI : MonoBehaviour
                 {
                     CarViewVCamController.ChangeView(CarViewVCamController.VIEW_POSITION.REAR_TOP);
                     _Cluster.RemoveFromClassList("Cluster--Hide");
-                    HideAllDiagnosisWindow();
                 }
-                else if(dstButton == _ButtonDiagnosis)
+                else
                 {
-                    if(_CurrentSelectedLeftDiagnosisTabButton == null)
+
+                    _Cluster.AddToClassList("Cluster--Hide");
+                }
+                if (dstButton == _ButtonDiagnosis)
+                {
+                    if (_CurrentSelectedLeftDiagnosisTabButton == null)
                     {
                         _CurrentSelectedLeftDiagnosisTabButton = _ButtonCarStatus;
                     }
@@ -98,8 +113,27 @@ public class HDOBD2MainUI : MonoBehaviour
                     //        _CurrentSelectedLeftDiagnosisTabButton.SendEvent(e);
                     //}
                     _LeftDiagnosisTab.RemoveFromClassList("LeftDiagnosisTab--Hide");
-                    _Cluster.AddToClassList("Cluster--Hide");
+                }
+                else
+                {
+                    HideAllDiagnosisWindow();
+                    _LeftDiagnosisTab.AddToClassList("LeftDiagnosisTab--Hide");
+                }
+                if(dstButton == _ButtonSetting)
+                {
 
+                }
+                else
+                {
+
+                }
+                if (dstButton == _ButtonDebug)
+                {
+                    _DebugFrame.style.display = DisplayStyle.Flex;
+                }
+                else
+                {
+                    _DebugFrame.style.display = DisplayStyle.None;
                 }
                 _CurrentSelectedLeftTabButton = dstButton;
             });
@@ -126,19 +160,19 @@ public class HDOBD2MainUI : MonoBehaviour
                 else if (dstButton == _ButtonDTC)
                 {
                     UIDTCMode();
-                    CarViewVCamController.ChangeView(CarViewVCamController.VIEW_POSITION.TOP);
+                    CarViewVCamController.ChangeView(CarViewVCamController.VIEW_POSITION.FRONT_SIDE_FAR);
                 }
                 _CurrentSelectedLeftDiagnosisTabButton = dstButton;
             });
         }
 
-        List<string> statusNameList = new List<string>() { "1", "2", "3" };
+        //List<string> testStatusNameList = new List<string>() { "1", "2", "3" };
         _CarStatusRowResource = Resources.Load<VisualTreeAsset>("CarStatusRow");
         _CarStatusScrollView.Clear();
-        foreach (string statusName in statusNameList)
-        {
-            UpdatePIDStatus(statusName, "test");
-        }
+        //foreach (string statusName in testStatusNameList)
+        //{
+        //    UpdatePIDStatus(statusName, "test");
+        //}
         _DTCScrollView.Clear();
 
 
@@ -149,23 +183,109 @@ public class HDOBD2MainUI : MonoBehaviour
         _SpeedometerGaugeCustomControl = _Cluster.Q<CircularGaugeCustomControl>("SpeedometerGauge");
         _LabelSpeed = _Cluster.Q<Label>("SpeedLabel");
 
+        _FuelLevelGaugeCustomControl = _Cluster.Q<CircularGaugeCustomControl>("FuelLevelGauge");
+        _LabelFuelLevel = _Cluster.Q<Label>("FuelLevelLabel");
 
+
+
+        _DebugFrame = root.Q<VisualElement>("DebugFrame");
+        {
+            _LabelDebug = _DebugFrame.Q<Label>("LabelDebug");
+            _LabelDebugDetail = _DebugFrame.Q<Label>("LabelDebugDetail");
+            _LabelDebugDetailCapture = _DebugFrame.Q<Label>("LabelDebugDetailCapture");
+            _ButtonCaptureDebugDetail = _DebugFrame.Q<Button>("ButtonCaptureDebugDetail");
+
+            _ButtonCaptureDebugDetail.RegisterCallback<ClickEvent>((ClickEvent evt) =>
+            {
+                _LabelDebugDetailCapture.text = _LabelDebugDetail.text;
+            });
+        }
+
+
+
+
+        //init ui
+        using (var e = new ClickEvent() { target = _ButtonMainDashboard })
+            _ButtonMainDashboard.SendEvent(e);
+    }
+
+    private void OnDestroy()
+    {
+        LogWriter?.Close();
     }
     Queue<string> _debugStrings = new Queue<string>();
     static public void PrintlnDebugLabel(string text)
     {
-        while(_instance._debugStrings.Count >= 20)
+        _instance.Invoke(() =>
         {
-            _instance._debugStrings.Dequeue();
-        }
-        _instance._debugStrings.Enqueue(text);
+            while (_instance._debugStrings.Count >= 20)
+            {
+                _instance._debugStrings.Dequeue();
+            }
+            _instance._debugStrings.Enqueue(text);
 
-        _instance._DebugLabel.text = "";
-        foreach (var item in _instance._debugStrings)
+            _instance._LabelDebug.text = "";
+            foreach (var item in _instance._debugStrings)
+            {
+                _instance._LabelDebug.text += $"{item}\n";
+
+            }
+        });
+    }
+    Queue<string> _detailDebugStrings = new Queue<string>();
+    static public void PrintlnDetailDebugLabel(string text)
+    {
+        _instance.Invoke(() =>
         {
-            _instance._DebugLabel.text += $"{item}\n";
+            var nowString = DateTime.Now.ToString("HH:mm:ss_FFF");
 
-        }
+            while (_instance._detailDebugStrings.Count >= 200)
+            {
+                _instance._detailDebugStrings.Dequeue();
+            }
+            _instance._detailDebugStrings.Enqueue($"{nowString} {text}");
+
+            _instance._LabelDebugDetail.text = "";
+            foreach (var item in _instance._detailDebugStrings)
+            {
+                _instance._LabelDebugDetail.text += $"{item}\n";
+
+            }
+        });
+    }
+    StreamWriter LogWriter;
+    static public void WriteLog(string category, string title, string message)
+    {
+        _instance.Invoke(() =>
+        {
+            var nowString = DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss_FFF");
+            if(_instance.LogWriter == null)
+            {
+                var dir = $"{Application.persistentDataPath}/logs";
+                var dirInfo = new DirectoryInfo(dir);
+                PrintlnDebugLabel($"log write path: {dirInfo.FullName}");
+                if (!dirInfo.Exists)
+                {
+                    dirInfo.Create();
+                }
+                var dateStringForFileName = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss_FFF");
+
+                string path = $"{dir}/hdobd2_log_{dateStringForFileName}.csv";
+                try
+                {
+                    _instance.LogWriter = new StreamWriter(path, true);
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"fail to open Log. exception: {ex}");
+                    PrintlnDebugLabel($"fail to open Log. exception: {ex}");
+                    //Application.Quit();
+                    return;
+                }
+            }
+            _instance.LogWriter.WriteLine($"{nowString},{category},{title},{message}");
+            _instance.LogWriter.Flush();
+        });
     }
     private object _lock = new object();
     private System.Action _callbacks;
@@ -177,8 +297,6 @@ public class HDOBD2MainUI : MonoBehaviour
         }
     }
 
-    float rpm;
-    float speed;
     void Update()
     {
         //sure, this updates constantly, again, for demo purposes... implement the actual update hook however you please
@@ -197,51 +315,51 @@ public class HDOBD2MainUI : MonoBehaviour
         }
         action?.Invoke();
 
-        rpm += 10f;
-        if (rpm > 6000) rpm = 0;
-        speed += 0.5f;
-        if (speed > 200) speed = 0;
+        //rpm += 10f;
+        //if (rpm > 6000) rpm = 0;
+        //speed += 0.5f;
+        //if (speed > 200) speed = 0;
 
-        _LabelRpm.text = $"{rpm:0.}";
-        _LabelSpeed.text = $"{speed:0.}";
+        //_LabelRpm.text = $"{rpm:0.}";
+        //_LabelSpeed.text = $"{speed:0.}";
 
-        _RPMGaugeCustomControl.Value = (rpm / 3000f);
-        if (_RPMGaugeCustomControl.Value > 0.5f)
-        {
-            _RPMGaugeCustomControl.IsBlink = true;
-            _RPMGaugeCustomControl.Value = _RPMGaugeCustomControl.Value;
-        }
-        else
-        {
-            _RPMGaugeCustomControl.IsBlink = false;
+        //_RPMGaugeCustomControl.Value = (rpm / 3000f);
+        //if (_RPMGaugeCustomControl.Value > 0.5f)
+        //{
+        //    _RPMGaugeCustomControl.IsBlink = true;
+        //    _RPMGaugeCustomControl.Value = _RPMGaugeCustomControl.Value;
+        //}
+        //else
+        //{
+        //    _RPMGaugeCustomControl.IsBlink = false;
 
-        }
-        _SpeedometerGaugeCustomControl.Value = (speed / 240);
+        //}
+        //_SpeedometerGaugeCustomControl.Value = (speed / 240);
 
-        CarViewVCamController.SetCameraNoise(speed/240, speed/60);
+        //CarViewVCamController.SetCameraNoise(speed/240, speed/60);
 
-
+        _RPMGaugeCustomControl.JustRepaint();//BLINK를 위해서
     }
 
     void UIStatusMode()
     {
         _CarStatusFrame.RemoveFromClassList("CarStatusFrame--Hide");
         _DTCFrame.AddToClassList("DTCFrame--Hide");
-        _CarViewFrame.RemoveFromClassList("CarViewFrame--DTC");
+        //_CarViewFrame.RemoveFromClassList("CarViewFrame--DTC");
     }
     void UIDTCMode()
     {
         _CarStatusFrame.AddToClassList("CarStatusFrame--Hide");
         _DTCFrame.RemoveFromClassList("DTCFrame--Hide");
 
-        _CarViewFrame.AddToClassList("CarViewFrame--DTC");
+        //_CarViewFrame.AddToClassList("CarViewFrame--DTC");
     }
     void HideAllDiagnosisWindow()
     {
         _LeftDiagnosisTab.AddToClassList("LeftDiagnosisTab--Hide");
         _CarStatusFrame.AddToClassList("CarStatusFrame--Hide");
         _DTCFrame.AddToClassList("DTCFrame--Hide");
-        _CarViewFrame.RemoveFromClassList("CarViewFrame--DTC");
+        //_CarViewFrame.RemoveFromClassList("CarViewFrame--DTC");
     }
 
 
@@ -269,6 +387,78 @@ public class HDOBD2MainUI : MonoBehaviour
                 valueLabel.text = value;
                 _instance._CarStatusScrollView.Add(carStatusRowInstance);
                 _instance.PIDDict[code] = carStatusRowInstance;
+            }
+            switch (code)
+            {
+                case "RPM":
+                    {
+                        try
+                        {
+                            float rpm = float.Parse(value);
+                            _instance._LabelRpm.text = $"{rpm:0.}";
+
+                            _instance._RPMGaugeCustomControl.Value = (rpm / 6000f);
+                            if (rpm > 1500f)
+                            {
+                                _instance._RPMGaugeCustomControl.IsBlink = true;
+                            }
+                            else
+                            {
+                                _instance._RPMGaugeCustomControl.IsBlink = false;
+
+                            }
+                        }
+                        catch
+                        {
+
+                        }
+
+                        
+                        break;
+                    }
+                case "VEHICLE_SPEED":
+                    {
+                        try
+                        {
+                            float speed = float.Parse(value);
+                            _instance._LabelSpeed.text = $"{speed:0.}";
+
+                            _instance._SpeedometerGaugeCustomControl.Value = (speed / 240);
+                            CarViewVCamController.SetCameraNoise(speed / 240, speed / 60);
+                        }
+                        catch
+                        {
+
+                        }
+
+                        break;
+                    }
+                case "COOLANT_TEMP":
+                    {
+                        try
+                        {
+                            float temperature = float.Parse(value);
+                        }
+                        catch
+                        {
+
+                        }
+                        break;
+                    }
+                case "FUEL_LEVEL":
+                    {
+                        try
+                        {
+                            float fuelLevel = float.Parse(value);
+                            _instance._FuelLevelGaugeCustomControl.Value = fuelLevel / 100f;
+                            _instance._LabelFuelLevel.text = $"{fuelLevel:0.}";
+                        }
+                        catch
+                        {
+
+                        }
+                        break;
+                    }
             }
         });
         

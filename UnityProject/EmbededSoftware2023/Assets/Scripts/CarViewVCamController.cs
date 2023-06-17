@@ -9,6 +9,7 @@ public class CarViewVCamController : MonoBehaviour
     Cinemachine.CinemachineVirtualCamera _VCam;
     Cinemachine.CinemachineBasicMultiChannelPerlin _Noise;
     [SerializeField] GameObject FrontSideViewPositionObject;
+    [SerializeField] GameObject FrontSideFarViewPositionObject;
     [SerializeField] GameObject TopViewPositionObject;
     [SerializeField] GameObject SideViewPositionObject;
     [SerializeField] GameObject RearTopViewPositionObject;
@@ -23,6 +24,7 @@ public class CarViewVCamController : MonoBehaviour
     {
         TOP,
         FRONT_SIDE,
+        FRONT_SIDE_FAR,
         SIDE,
         REAR_TOP
     }
@@ -39,6 +41,11 @@ public class CarViewVCamController : MonoBehaviour
             case VIEW_POSITION.FRONT_SIDE:
                 {
                     _instance._VCam.Follow = _instance.FrontSideViewPositionObject.transform;
+                    break;
+                }
+            case VIEW_POSITION.FRONT_SIDE_FAR:
+                {
+                    _instance._VCam.Follow = _instance.FrontSideFarViewPositionObject.transform;
                     break;
                 }
             case VIEW_POSITION.SIDE:

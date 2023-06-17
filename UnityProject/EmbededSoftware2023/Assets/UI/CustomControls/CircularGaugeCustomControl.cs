@@ -16,6 +16,19 @@ public class CircularGaugeCustomControl : VisualElement
         m_value = newValue;
         RadialFill.MarkDirtyRepaint();
     }
+    public void JustRepaint()
+    {
+        if (this.panel != null)
+        {
+            //using (ChangeEvent<float> pooled = ChangeEvent<float>.GetPooled(this.m_value, Value))
+            //{
+            //    pooled.target = (IEventHandler)this;
+            //    this.SendEvent((EventBase)pooled);
+            //}
+            RadialFill.MarkDirtyRepaint();
+
+        }
+    }
 
     public float Value
     {
