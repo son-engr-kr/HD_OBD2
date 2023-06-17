@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO.Ports;
@@ -13,84 +14,7 @@ public class SerialWithArduino : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        string serialPortName = null;
-
-//#if UNITY_ANDROID
-//        foreach (var portName in SerialPort.GetPortNames())
-//        {
-//            Debug.Log($"portName: {portName}");
-//            if (portName.Contains("ttyACM"))
-//            {
-//                serialPortName = portName;
-//                break;
-//            }
-//        }
-//        HDOBD2MainUI.DebugLabel($"find port:{serialPortName}");
-
-//#elif UNITY_EDITOR
-//            serialPortName = "COM3";
-
-//#else
-//            serialPortName = "COM3";
-//#endif
-
-        foreach (var portName in SerialPort.GetPortNames())
-        {
-            Debug.Log($"portName: {portName}");
-#if UNITY_EDITOR
-            if (portName.Contains("COM4"))
-#else
-            if (portName.Contains("COM4"))
-#endif
-            {
-                serialPortName = portName;
-                break;
-            }
-        }
-        HDOBD2MainUI.PrintlnDebugLabel($"find port:{serialPortName}");
-
-        //_SerialPort = new SerialPort(SerialPort.GetPortNames().Last(), 9600);
-        if (serialPortName != null)
-        {
-            //var su = Runtime.getRuntime().exec("/system/bin/su");
-#if UNITY_ANDROID
-            HDOBD2MainUI.DebugLabel($"Android permission request");
-            var permissionList = new List<string>() { Permission.ExternalStorageWrite, Permission.ExternalStorageRead, Permission.FineLocation };
-            foreach(string permission in permissionList)
-            {
-                if (!Permission.HasUserAuthorizedPermission(permission))
-                {
-                    Permission.RequestUserPermission(permission);
-                }
-            }
-#endif
-            _SerialPort = new SerialPort($"{serialPortName}", 115200);
-            HDOBD2MainUI.PrintlnDebugLabel($"selectedport:{_SerialPort.PortName}");
-            try
-            {
-                //_SerialPort = new SerialPort(port, baudRate, Parity.None, 8, StopBits.One);
-                //_SerialPort.Handshake = Handshake.None;
-                //_SerialPort.ReadTimeout = 5000;    // 0.5 sec
-                //_SerialPort.WriteTimeout = 5000;
-                //_SerialPort.DtrEnable = true;
-                //_SerialPort.RtsEnable = true;
-                _SerialPort.Open();
-                HDOBD2MainUI.PrintlnDebugLabel($"port open");
-
-            }
-            catch(System.Exception e)
-            {
-                HDOBD2MainUI.PrintlnDebugLabel($"exeption while open port:{e}");
-            }
-
-        }
-        else
-        {
-            foreach (var portName in SerialPort.GetPortNames())
-            {
-                HDOBD2MainUI.PrintlnDebugLabel($"portName: {portName}");
-            }
-        }
+        
 
         _SerialCommunicationThread = new System.Threading.Thread(SerialCommunicationThread);
         _SerialCommunicationThread.Start();
@@ -104,8 +28,10 @@ public class SerialWithArduino : MonoBehaviour
             //HDOBD2MainUI.UpdatePIDStatus("test", $"{idx++}");
             if (_SerialPort != null)
             {
-                var res = _SerialPort.ReadLine();
-                if (res.Length >= 8)
+                try
+                {
+                    var res = _SerialPort.ReadLine();
+                    if (res.Length >= 8)
                 {
 
                     string header = res[0..8];
@@ -174,9 +100,16 @@ public class SerialWithArduino : MonoBehaviour
                         HDOBD2MainUI.PrintlnDetailDebugLabel($"{_SerialPort.PortName}: {res}");
                     }
                 }
+                }
+                catch(Exception e)
+                {
+                    HDOBD2MainUI.PrintlnDetailDebugLabel($"Exeption occur while read Serial:{e.Message}");
+                }
+                
             }
             else
             {
+                ConnectSerial();
                 HDOBD2MainUI.PrintlnDetailDebugLabel($"rpmValueForTest:{rpmValueForTest}");
                 HDOBD2MainUI.UpdatePIDStatus("RPM", $"{rpmValueForTest}");
                 HDOBD2MainUI.WriteLog("log test", "title test", $"{rpmValueForTest}");
@@ -197,6 +130,88 @@ public class SerialWithArduino : MonoBehaviour
         }
 
 
+    }
+
+    void ConnectSerial()
+    {
+        string serialPortName = null;
+
+        //#if UNITY_ANDROID
+        //        foreach (var portName in SerialPort.GetPortNames())
+        //        {
+        //            Debug.Log($"portName: {portName}");
+        //            if (portName.Contains("ttyACM"))
+        //            {
+        //                serialPortName = portName;
+        //                break;
+        //            }
+        //        }
+        //        HDOBD2MainUI.DebugLabel($"find port:{serialPortName}");
+
+        //#elif UNITY_EDITOR
+        //            serialPortName = "COM3";
+
+        //#else
+        //            serialPortName = "COM3";
+        //#endif
+
+        foreach (var portName in SerialPort.GetPortNames())
+        {
+            Debug.Log($"portName: {portName}");
+#if UNITY_EDITOR
+            if (portName.Contains("COM4"))
+#else
+            if (portName.Contains("COM4"))
+#endif
+            {
+                serialPortName = portName;
+                break;
+            }
+        }
+        HDOBD2MainUI.PrintlnDebugLabel($"find port:{serialPortName}");
+
+        //_SerialPort = new SerialPort(SerialPort.GetPortNames().Last(), 9600);
+        if (serialPortName != null)
+        {
+            //var su = Runtime.getRuntime().exec("/system/bin/su");
+#if UNITY_ANDROID
+            HDOBD2MainUI.DebugLabel($"Android permission request");
+            var permissionList = new List<string>() { Permission.ExternalStorageWrite, Permission.ExternalStorageRead, Permission.FineLocation };
+            foreach(string permission in permissionList)
+            {
+                if (!Permission.HasUserAuthorizedPermission(permission))
+                {
+                    Permission.RequestUserPermission(permission);
+                }
+            }
+#endif
+            _SerialPort = new SerialPort($"{serialPortName}", 115200);
+            HDOBD2MainUI.PrintlnDebugLabel($"selectedport:{_SerialPort.PortName}");
+            try
+            {
+                //_SerialPort = new SerialPort(port, baudRate, Parity.None, 8, StopBits.One);
+                //_SerialPort.Handshake = Handshake.None;
+                //_SerialPort.ReadTimeout = 5000;    // 0.5 sec
+                //_SerialPort.WriteTimeout = 5000;
+                //_SerialPort.DtrEnable = true;
+                //_SerialPort.RtsEnable = true;
+                _SerialPort.Open();
+                HDOBD2MainUI.PrintlnDebugLabel($"port open");
+
+            }
+            catch (System.Exception e)
+            {
+                HDOBD2MainUI.PrintlnDebugLabel($"exeption while open port:{e}");
+            }
+
+        }
+        else
+        {
+            foreach (var portName in SerialPort.GetPortNames())
+            {
+                HDOBD2MainUI.PrintlnDebugLabel($"portName: {portName}");
+            }
+        }
     }
 
     private void OnDestroy()
