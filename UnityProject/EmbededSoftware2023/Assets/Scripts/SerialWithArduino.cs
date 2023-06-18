@@ -32,74 +32,61 @@ public class SerialWithArduino : MonoBehaviour
                 {
                     var res = _SerialPort.ReadLine();
                     if (res.Length >= 8)
-                {
-
-                    string header = res[0..8];
-                    if (header == "OBD2____")
                     {
-                        var resSplit = res.Split(",");
-                        if(resSplit.Length >= 3)
+
+                        string header = res[0..8];
+                        if (header == "OBD2____")
                         {
-                            string category = resSplit[1];
-                            string code = resSplit[2];
-                            string value = resSplit[3];
-                            switch (category)
+                            var resSplit = res.Split(",");
+                            if(resSplit.Length >= 3)
                             {
-                                case "STATUS":
-                                    {
-                                        HDOBD2MainUI.PrintlnDetailDebugLabel($"status receive:{code}-{value}");
+                                string category = resSplit[1];
+                                string code = resSplit[2];
+                                string value = resSplit[3];
+                                HDOBD2MainUI.WriteOBDLog(category, code, value);
+                                switch (category)
+                                {
+                                    case "STATUS":
+                                        {
+                                            HDOBD2MainUI.PrintlnDetailDebugLabel($"status receive:{code}-{value}");
+                                            HDOBD2MainUI.UpdatePIDStatus(code, value);
+                                            break;
+                                        }
+                                    case "DTC":
+                                        {
+                                            HDOBD2MainUI.PrintlnDetailDebugLabel($"DTC receive:{code}-{value}");
 
-                                        HDOBD2MainUI.UpdatePIDStatus(code, value);
-                                        //switch (pidName)
-                                        //{
-                                        //    case "RPM":
-                                        //        {
+                                            HDOBD2MainUI.UpdateDTC(code);
 
-                                        //            break;
-                                        //        }
-                                        //    case "COOLANT_TEMP":
-                                        //        {
-
-                                        //            break;
-                                        //        }
-                                        //}
-                                        break;
-                                    }
-                                case "DTC":
-                                    {
-                                        HDOBD2MainUI.PrintlnDetailDebugLabel($"DTC receive:{code}-{value}");
-
-                                        HDOBD2MainUI.UpdateDTC(code);
-
-                                        break;
-                                    }
+                                            break;
+                                        }
+                                }
                             }
+                            else
+                            {
+                                HDOBD2MainUI.PrintlnDetailDebugLabel($"packet split by ',' result length < 3: {res}");
+
+                            }
+
+
+
+
+                        }
+                        else if (header == "packet__")
+                        {
+
+                        }
+                        else if (header == "order___")
+                        {
+                            var resSplit = res.Split(",");
+                            float angle = float.Parse(resSplit[1]);
+                            transform.rotation = Quaternion.Euler(0, angle * Time.deltaTime, 0) * transform.rotation;
                         }
                         else
                         {
-                            HDOBD2MainUI.PrintlnDetailDebugLabel($"packet split by ',' result length < 3: {res}");
-
+                            HDOBD2MainUI.PrintlnDetailDebugLabel($"Non-interpretable Serial Message: {res}");
                         }
-
-
-
-
                     }
-                    else if (header == "packet__")
-                    {
-
-                    }
-                    else if (header == "order___")
-                    {
-                        var resSplit = res.Split(",");
-                        float angle = float.Parse(resSplit[1]);
-                        transform.rotation = Quaternion.Euler(0, angle * Time.deltaTime, 0) * transform.rotation;
-                    }
-                    else
-                    {
-                        HDOBD2MainUI.PrintlnDetailDebugLabel($"{_SerialPort.PortName}: {res}");
-                    }
-                }
                 }
                 catch(Exception e)
                 {
@@ -112,7 +99,7 @@ public class SerialWithArduino : MonoBehaviour
                 ConnectSerial();
                 HDOBD2MainUI.PrintlnDetailDebugLabel($"rpmValueForTest:{rpmValueForTest}");
                 HDOBD2MainUI.UpdatePIDStatus("RPM", $"{rpmValueForTest}");
-                HDOBD2MainUI.WriteLog("log test", "title test", $"{rpmValueForTest}");
+                HDOBD2MainUI.WriteSystemLog("log test", "title test", $"{rpmValueForTest}");
                 rpmValueForTest += 100;
                 if(rpmValueForTest > 5000)
                 {

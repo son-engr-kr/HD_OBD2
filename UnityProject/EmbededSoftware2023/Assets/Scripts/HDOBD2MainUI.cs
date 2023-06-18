@@ -211,7 +211,7 @@ public class HDOBD2MainUI : MonoBehaviour
 
     private void OnDestroy()
     {
-        LogWriter?.Close();
+        SystemLogWriter?.Close();
     }
     Queue<string> _debugStrings = new Queue<string>();
     static public void PrintlnDebugLabel(string text)
@@ -253,13 +253,14 @@ public class HDOBD2MainUI : MonoBehaviour
             }
         });
     }
-    StreamWriter LogWriter;
-    static public void WriteLog(string category, string title, string message)
+    StreamWriter SystemLogWriter;
+    StreamWriter OBDLogWriter;
+    static public void WriteSystemLog(string category, string title, string message)
     {
         _instance.Invoke(() =>
         {
             var nowString = DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss_FFF");
-            if(_instance.LogWriter == null)
+            if(_instance.SystemLogWriter == null)
             {
                 var dir = $"{Application.persistentDataPath}/logs";
                 var dirInfo = new DirectoryInfo(dir);
@@ -270,10 +271,10 @@ public class HDOBD2MainUI : MonoBehaviour
                 }
                 var dateStringForFileName = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss_FFF");
 
-                string path = $"{dir}/hdobd2_log_{dateStringForFileName}.csv";
+                string path = $"{dir}/hdobd2_system_log_{dateStringForFileName}.csv";
                 try
                 {
-                    _instance.LogWriter = new StreamWriter(path, true);
+                    _instance.SystemLogWriter = new StreamWriter(path, true);
                 }
                 catch (Exception ex)
                 {
@@ -283,8 +284,41 @@ public class HDOBD2MainUI : MonoBehaviour
                     return;
                 }
             }
-            _instance.LogWriter.WriteLine($"{nowString},{category},{title},{message}");
-            _instance.LogWriter.Flush();
+            _instance.SystemLogWriter.WriteLine($"{nowString},{category},{title},{message}");
+            _instance.SystemLogWriter.Flush();
+        });
+    }
+    static public void WriteOBDLog(string category, string code, string value)
+    {
+        _instance.Invoke(() =>
+        {
+            var nowString = DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss_FFF");
+            if (_instance.OBDLogWriter == null)
+            {
+                var dir = $"{Application.persistentDataPath}/logs";
+                var dirInfo = new DirectoryInfo(dir);
+                PrintlnDebugLabel($"log write path: {dirInfo.FullName}");
+                if (!dirInfo.Exists)
+                {
+                    dirInfo.Create();
+                }
+                var dateStringForFileName = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss_FFF");
+
+                string path = $"{dir}/hdobd2_obd_log_{dateStringForFileName}.csv";
+                try
+                {
+                    _instance.OBDLogWriter = new StreamWriter(path, true);
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"fail to open Log. exception: {ex}");
+                    PrintlnDebugLabel($"fail to open Log. exception: {ex}");
+                    //Application.Quit();
+                    return;
+                }
+            }
+            _instance.OBDLogWriter.WriteLine($"{nowString},{category},{code},{value}");
+            _instance.OBDLogWriter.Flush();
         });
     }
     private object _lock = new object();
