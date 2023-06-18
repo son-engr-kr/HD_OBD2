@@ -400,7 +400,63 @@ public class HDOBD2MainUI : MonoBehaviour
         _DTCFrame.AddToClassList("DTCFrame--Hide");
         //_CarViewFrame.RemoveFromClassList("CarViewFrame--DTC");
     }
+    public class OBDDataHandler
+    {
+        
+        public class OBDDataTimeSeries
+        {
+            public class OBDDataTimeStamp
+            {
+                public OBDDataTimeStamp(long unixTime, float value)
+                {
+                    UnixTime = unixTime;
+                    Value = value;
+                }
+                public long UnixTime;
+                public float Value;
+            }
+            public void AddToQueue(long unixTime, float value)
+            {
+                if(dataCount == 0)
+                {
+                    MaxValue = value;
+                    MinValue = value;
+                }
+                else
+                {
+                    OBDDataTimeStamp prevStamp = timeSeriesQueue.Peek();
+                    float timePassed = (float)(unixTime - prevStamp.UnixTime)/1000f;
+                    MaxValue = Mathf.Max(MaxValue, value);
+                    MinValue = Mathf.Min(MinValue, value);
+                    if(value > prevStamp.Value)
+                    {
+                        float increaseValue = value - prevStamp.Value;
+                        IncreaseAbsAccumulate += increaseValue;
+                        IncreaseRateAbsAccumulate += increaseValue/timePassed;
+                    }
+                    else
+                    {
+                        float decreaseValue = prevStamp.Value - value;
+                        DecreaseAbsAccumulate += decreaseValue;
+                        DecreaseRateAbsAccumulate += decreaseValue / timePassed;
+                    }
 
+                }
+                timeSeriesQueue.Enqueue(new OBDDataTimeStamp(unixTime, value));
+                
+            }
+            private Queue<OBDDataTimeStamp> timeSeriesQueue = new Queue<OBDDataTimeStamp>();
+            private long dataCount=0;
+            private float MaxValue; 
+            private float MinValue;
+            private double IncreaseAbsAccumulate = 0.0;
+            private double DecreaseAbsAccumulate = 0.0;
+            private double IncreaseRateAbsAccumulate = 0.0;
+            private double DecreaseRateAbsAccumulate = 0.0;
+
+        }
+        public Dictionary<string, OBDDataTimeSeries> DataDict = new Dictionary<string, OBDDataTimeSeries>();
+    }
 
     Dictionary<string, TemplateContainer> PIDDict = new Dictionary<string, TemplateContainer>();
     static public void UpdatePIDStatus(string code, string value)
@@ -409,7 +465,6 @@ public class HDOBD2MainUI : MonoBehaviour
         {
             if (_instance.PIDDict.ContainsKey(code))
             {
-
                 var carStatusRowInstance = _instance.PIDDict[code];
                 var nameLabel = carStatusRowInstance.Q<Label>("StatusName");
                 var valueLabel = carStatusRowInstance.Q<Label>("StatusValue");
