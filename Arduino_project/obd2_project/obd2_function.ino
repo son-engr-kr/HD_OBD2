@@ -445,7 +445,7 @@ void interpretPIDAndSend(unsigned char* rxBuf){
 
       case PID_HYBRID_BATTERY_PERCENTAGE:
         {
-          float temp = (100 * rxBuf[3]) / 255;
+          float temp = (100.0f * rxBuf[3]) / 255.0f;
           // Serial.print("Hybrid Battery Percentage (%) : ");
           Serial.print("OBD2____,STATUS,HYBRID_BATTERY_PERCENTAGE,");
           Serial.println(temp, DEC);
@@ -490,7 +490,7 @@ void interpretPIDAndSend(unsigned char* rxBuf){
 
       case PID_CONTROL_MODULE_VOLTAGE:
         {
-          float temp =  (256 * rxBuf[3] + rxBuf[4])/1000;
+          float temp =  (256.0f * rxBuf[3] + rxBuf[4])/1000.0f;
           // Serial.print("Control Module Voltage (V) : ");
           Serial.print("OBD2____,STATUS,CONTROL_MODULE_VOLTAGE,");
           Serial.println(temp, DEC);
@@ -526,7 +526,7 @@ void interpretPIDAndSend(unsigned char* rxBuf){
       
       case PID_FUEL_LEVEL:
         {
-          float temp = (100 * rxBuf[3])/255;
+          float temp = (100.0f * rxBuf[3])/255.0f;
           Serial.print("OBD2____,STATUS,FUEL_LEVEL,");
           Serial.println(temp, DEC);
           break;
@@ -534,7 +534,7 @@ void interpretPIDAndSend(unsigned char* rxBuf){
 
       case PID_EGR_ERROR:
         {
-          float temp = (100 * rxBuf[3])/128-100;
+          float temp = (100.0f * rxBuf[3])/ 128.0f - 100;
           // Serial.print("EGR Error (%): ");
           Serial.print("OBD2____,STATUS,EGR_ERROR,");
           Serial.println(temp, DEC);
@@ -543,7 +543,7 @@ void interpretPIDAndSend(unsigned char* rxBuf){
 
       case PID_COMMANDED_EGR:
         {
-          float temp = (100 * rxBuf[3])/255;
+          float temp = (100.0f * rxBuf[3]) / 255.0f;
           // Serial.print("Commanded EGR (%): ");
           Serial.print("OBD2____,STATUS,COMMANDED_EGR,");
           Serial.println(temp, DEC);
@@ -617,7 +617,7 @@ void interpretPIDAndSend(unsigned char* rxBuf){
 
       case PID_ENGINE_LOAD:
         {
-          float Engine_Load = ( 100 * rxBuf[3] ) / 255;
+          float Engine_Load = ( 100.0f * rxBuf[3] ) / 255.0f;
           // Serial.print("Engine Load (%): ");
           Serial.print("OBD2____,STATUS,ENGINE_LOAD,");
           Serial.println(Engine_Load,DEC);
