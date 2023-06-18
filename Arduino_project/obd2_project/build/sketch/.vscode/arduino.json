@@ -1,7 +1,0 @@
-#line 1 "C:\\HD_OBD2\\HD_OBD2\\Arduino_project\\obd2_project\\.vscode\\arduino.json"
-{
-    "sketch": "obd2_project.ino",
-    "board": "arduino:avr:uno",
-    "port": "COM3",
-    "output": ".\\build"
-}
