@@ -213,28 +213,28 @@ void interpretPIDAndSend(unsigned char* rxBuf){
   switch (rxBuf[2]) {
       case PID_SHORT_TERM_FUEL_TRIM_1:
         {
-          int32_t temp =  (100 * rxBuf[3]) / 128 - 100; ///////
+          float temp =  rxBuf[3] / 1.28f - 100; ///////
           PrintOBD2Data(OBD2_HEADER,OBD2_CATEGORY_STATUS,"SHORT_TERM_FUEL_TRIM_1",temp);
           break;
         }
 
       case PID_LONG_TERM_FUEL_TRIM_1:
         {
-          int32_t temp =  (100 * rxBuf[3]) / 128 - 100;////
+          float temp =  rxBuf[3] / 1.28f - 100;////
           PrintOBD2Data(OBD2_HEADER,OBD2_CATEGORY_STATUS,"LONG_TERM_FUEL_TRIM_1",temp);
           break;
         }
 
       case PID_SHORT_TERM_FUEL_TRIM_2:
         {
-          int32_t temp =  (100 * rxBuf[3]) / 128 - 100;////
+          float temp =  rxBuf[3] / 1.28f - 100;////
           PrintOBD2Data(OBD2_HEADER,OBD2_CATEGORY_STATUS,"SHORT_TERM_FUEL_TRIM_2",temp);
           break;
         }
 
       case PID_LONG_TERM_FUEL_TRIM_2:
         {
-          int32_t temp =  (100 * rxBuf[3]) / 128 - 100;////
+          float temp =  rxBuf[3] / 1.28f - 100;////
           PrintOBD2Data(OBD2_HEADER,OBD2_CATEGORY_STATUS,"LONG_TERM_FUEL_TRIM_2",temp);
           break;
         }
