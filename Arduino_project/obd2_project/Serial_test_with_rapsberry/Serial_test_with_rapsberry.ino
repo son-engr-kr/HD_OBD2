@@ -66,7 +66,7 @@ long unsigned int rxId;
 unsigned char len = 0;
 unsigned char rxBuf[8];
 char msgString[128];                        // Array to store serial string
-void RequestStoredDTC()
+void requestStoredDTC()
 {
   unsigned char tmp[8] = {0x02, 0x03, 0x01, 0, 0, 0, 0, 0};
 
@@ -80,7 +80,7 @@ void RequestStoredDTC()
   }
 
 }
-void ReceiveStoredDTC()
+void receiveStoredDTC()
 {
   if (!digitalRead(CAN0_INT)) 
   {                      // If CAN0_INT pin is low, read receive buffer
@@ -476,11 +476,11 @@ void loop()
   //abitrary loop delay
   // delay(40);
 
-  // RequestStoredDTC();
+  // requestStoredDTC();
 
   // delay(40);
 
-  // ReceiveStoredDTC();
+  // receiveStoredDTC();
 
 
   delay(500);
