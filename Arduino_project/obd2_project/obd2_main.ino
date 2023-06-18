@@ -41,6 +41,13 @@ void loop()
 {
   requestAndReceivePID(PID_ENGINE_RPM);
   requestAndReceivePID(PID_VEHICLE_SPEED);
+  if(requestCount % 10 == 0){
+    for(int idx = 0; idx < sizeof(pidMidSignificant)/sizeof(unsigned char); idx++){
+      requestAndReceivePID(pidMidSignificant[idx]);
+      requestAndReceivePID(PID_ENGINE_RPM);
+      requestAndReceivePID(PID_VEHICLE_SPEED);
+    }
+  }
   if(requestCount % 100 == 0){
     for(int idx = 0; idx < sizeof(pidLowSignificant)/sizeof(unsigned char); idx++){
       requestAndReceivePID(pidLowSignificant[idx]);
