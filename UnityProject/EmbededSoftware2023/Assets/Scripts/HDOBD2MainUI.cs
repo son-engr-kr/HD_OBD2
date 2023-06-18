@@ -57,6 +57,9 @@ public class HDOBD2MainUI : MonoBehaviour
         Label _LabelDebugDetail;
         Label _LabelDebugDetailCapture;
         Button _ButtonCaptureDebugDetail;
+
+    VisualElement _SettingFrame;
+
     void Awake()
     {
         QualitySettings.vSyncCount = 0;
@@ -121,11 +124,11 @@ public class HDOBD2MainUI : MonoBehaviour
                 }
                 if(dstButton == _ButtonSetting)
                 {
-
+                    _SettingFrame.style.display = DisplayStyle.Flex;
                 }
                 else
                 {
-
+                    _SettingFrame.style.display = DisplayStyle.None;
                 }
                 if (dstButton == _ButtonDebug)
                 {
@@ -167,7 +170,7 @@ public class HDOBD2MainUI : MonoBehaviour
         }
 
         //List<string> testStatusNameList = new List<string>() { "1", "2", "3" };
-        _CarStatusRowResource = Resources.Load<VisualTreeAsset>("CarStatusRow");
+        _CarStatusRowResource = Resources.Load<VisualTreeAsset>("_s_CarStatusRow");
         _CarStatusScrollView.Clear();
         //foreach (string statusName in testStatusNameList)
         //{
@@ -185,6 +188,8 @@ public class HDOBD2MainUI : MonoBehaviour
 
         _FuelLevelGaugeCustomControl = _Cluster.Q<CircularGaugeCustomControl>("FuelLevelGauge");
         _LabelFuelLevel = _Cluster.Q<Label>("FuelLevelLabel");
+
+        _SettingFrame = root.Q<VisualElement>("SettingFrame");
 
 
 
