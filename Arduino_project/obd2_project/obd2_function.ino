@@ -72,14 +72,18 @@ unsigned char pidMidSignificant[] = {
   };
 
 void PrintOBD2Data(char* HEADER, char* CATEGORY, char* pidname, double value){
-  sprintf(buffer,"%s,%s,%s,%lf",HEADER,CATEGORY,pidname,value);
-  Serial.println(buffer);
+  // sprintf(buffer,"%s,%s,%s,%lf",HEADER,CATEGORY,pidname,value);
+  // Serial.println(buffer);
+  sprintf(buffer,"%s,%s,%s,",HEADER,CATEGORY,pidname);
+  Serial.print(buffer);
+  Serial.println(value);
 }
 
 void PrintOBD2DTC(char* HEADER, char* CATEGORY,char char1, int num2, int num3, int num4, int num5 , double value){
-  sprintf(buffer,"%s,%s,%c%d%d%d%d,%lf",HEADER,CATEGORY,
-  char1,num2,num3,num4,num5,value );
-  Serial.println(buffer);
+  sprintf(buffer,"%s,%s,%c%d%d%d%d",HEADER,CATEGORY,
+  char1,num2,num3,num4,num5 );
+  Serial.print(buffer);
+  Serial.println(value);
 }
 
 void ClearDTCandMIL(){
@@ -127,7 +131,7 @@ void receiveOBD(){
   if (!digitalRead(CAN0_INT)) {                      // If CAN0_INT pin is low, read receive buffer
     CAN0.readMsgBuf(&rxId, &len, rxBuf);      // Read data: len = data length, buf = data byte(s)
 
-    sprintf(msgString, "Standard ID: 0x%.3lX, DLC: %1d, Data: ", rxId, len);
+    // sprintf(msgString, "Standard ID: 0x%.3lX, DLC: %1d, Data: ", rxId, len);
     Serial.print(msgString);
 
     for (byte i = 0; i < len; i++) {
@@ -196,13 +200,13 @@ void requestPID(unsigned char __pid)
   byte sndStat = CAN0.sendMsgBuf(CAN_ID_PID, 0, 8, tmp);
 
   if (sndStat == CAN_OK) {
-    Serial.print("PID sent: 0x");
-    Serial.println(__pid, HEX);
+    // Serial.print("PID sent: 0x");
+    // Serial.println(__pid, HEX);
   }
   else {
     Serial.println("Error Sending Message...");
     
-      delay(1);
+    delay(1);
   }
 }
 void interpretPIDAndSend(unsigned char* rxBuf){
