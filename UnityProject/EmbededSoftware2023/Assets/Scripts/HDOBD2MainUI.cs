@@ -459,7 +459,10 @@ public class HDOBD2MainUI : MonoBehaviour
             private double DecreaseAbsAccumulate = 0.0;
             private double IncreaseRateAbsAccumulate = 0.0;
             private double DecreaseRateAbsAccumulate = 0.0;
-
+            public string Test_GetStatisticsString()
+            {
+                return $"Max:{MaxValue},Min:{MinValue},IncreaseAbsAccumulate:{IncreaseAbsAccumulate},DecreaseAbsAccumulate:{DecreaseAbsAccumulate}";
+            }
         }
         public void PushData(string code, float value)
         {
@@ -467,10 +470,14 @@ public class HDOBD2MainUI : MonoBehaviour
             {
                 DataDict[code].AddToQueue(TimeManager.GetNowUnixTimeMillis(), value);
             }
-            else
+            else 
             {
                 DataDict[code] = new OBDDataTimeSeries();
             }
+        }
+        public string Test_GetStatisticsString(string code)
+        {
+            return $"{DataDict[code].Test_GetStatisticsString()}";
         }
         public Dictionary<string, OBDDataTimeSeries> DataDict = new Dictionary<string, OBDDataTimeSeries>();
     }
@@ -484,30 +491,33 @@ public class HDOBD2MainUI : MonoBehaviour
             {
                 float valueFloat = float.Parse(value);
                 _instance._OBDDataHandler.PushData(code, valueFloat);
+
+                if (_instance.PIDUIDict.ContainsKey(code))
+                {
+                    var carStatusRowInstance = _instance.PIDUIDict[code];
+                    var nameLabel = carStatusRowInstance.Q<Label>("StatusName");
+                    var valueLabel = carStatusRowInstance.Q<Label>("StatusValue");
+
+                    valueLabel.text = $"{value}, {_instance._OBDDataHandler.Test_GetStatisticsString(code)}";
+                }
+                else
+                {
+                    var carStatusRowInstance = _instance._CarStatusRowResource.Instantiate();
+                    var nameLabel = carStatusRowInstance.Q<Label>("StatusName");
+                    var valueLabel = carStatusRowInstance.Q<Label>("StatusValue");
+
+                    nameLabel.text = code;
+                    valueLabel.text = $"{value}, {_instance._OBDDataHandler.Test_GetStatisticsString(code)}";
+
+                    _instance._CarStatusScrollView.Add(carStatusRowInstance);
+                    _instance.PIDUIDict[code] = carStatusRowInstance;
+                }
             }
             catch (Exception ex)
             {
 
             }
-            if (_instance.PIDUIDict.ContainsKey(code))
-            {
-                var carStatusRowInstance = _instance.PIDUIDict[code];
-                var nameLabel = carStatusRowInstance.Q<Label>("StatusName");
-                var valueLabel = carStatusRowInstance.Q<Label>("StatusValue");
-
-                valueLabel.text = value;
-            }
-            else
-            {
-                var carStatusRowInstance = _instance._CarStatusRowResource.Instantiate();
-                var nameLabel = carStatusRowInstance.Q<Label>("StatusName");
-                var valueLabel = carStatusRowInstance.Q<Label>("StatusValue");
-
-                nameLabel.text = code;
-                valueLabel.text = value;
-                _instance._CarStatusScrollView.Add(carStatusRowInstance);
-                _instance.PIDUIDict[code] = carStatusRowInstance;
-            }
+            
             switch (code)
             {
                 case "RPM":
