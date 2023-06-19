@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 9, 41, 0.78); width: 100%; height: 100%;">
+        <ui:ScrollView name="ScrollViewDebug" style="width: 50%; height: 30%; position: absolute; border-left-color: rgba(255, 255, 255, 0.6); border-right-color: rgba(255, 255, 255, 0.6); border-top-color: rgba(255, 255, 255, 0.6); border-bottom-color: rgba(255, 255, 255, 0.6); border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px;">
+            <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="LabelDebug" style="background-color: rgba(0, 0, 0, 0); color: rgb(255, 255, 255);" />
+        </ui:ScrollView>
+        <ui:ScrollView name="ScrollViewDebugDetail" style="position: absolute; width: 50%; height: 100%; left: 50%; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px;">
+            <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="LabelDebugDetail" style="color: rgb(255, 255, 255);" />
+        </ui:ScrollView>
+        <ui:ScrollView name="ScrollViewDebugDetailCapture" style="width: 50%; height: 70%; top: 30%; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px;">
+            <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="LabelDebugDetailCapture" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); color: rgb(255, 255, 255);" />
+        </ui:ScrollView>
+        <ui:Button text="Capture" display-tooltip-when-elided="true" name="ButtonCaptureDebugDetail" style="position: absolute; top: 33px; left: auto; right: 0; border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; border-top-left-radius: 8px; border-bottom-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; width: 195px; height: 106px; font-size: 29px; -unity-font-style: bold;" />
+    </ui:VisualElement>
+</ui:UXML>

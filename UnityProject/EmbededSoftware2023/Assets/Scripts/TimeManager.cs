@@ -9,14 +9,14 @@ public class TimeManager
         long highDurMillis = (long)(highDurSec * 1000);
         long lowDurMillis = (long)(lowDurSec * 1000);
         long totalDurMillis = highDurMillis + lowDurMillis;
-        long curTime = GetNowTimeMillis();
+        long curTime = GetNowUnixTimeMillis();
         if(curTime % totalDurMillis < highDurMillis)
         {
             return true;
         }
         return false;
     }
-    public static long GetNowTimeMillis()
+    public static long GetNowUnixTimeMillis()
     {
         return System.DateTimeOffset.Now.ToUnixTimeMilliseconds();
 

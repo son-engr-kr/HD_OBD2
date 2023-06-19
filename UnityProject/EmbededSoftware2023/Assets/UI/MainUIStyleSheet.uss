@@ -44,7 +44,7 @@
     transition-timing-function: ease-in-out;
     left: auto;
     top: 10%;
-    right: -30%;
+    right: -100%;
 }
 
 .LeftTabButton {
@@ -104,10 +104,10 @@
     flex-grow: 1;
     background-color: rgba(0, 0, 0, 0);
     position: absolute;
-    left: 20%;
+    left: 340px;
     right: auto;
     height: 70%;
-    top: 25%;
+    top: 10%;
     transition-property: all;
     transition-timing-function: ease-in-out;
     transition-duration: 0.3s;
@@ -120,7 +120,7 @@
     left: 100%;
     right: auto;
     height: 70%;
-    top: 25%;
+    top: 10%;
     transition-property: all;
     transition-timing-function: ease-in-out;
     transition-duration: 0.3s;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO.Ports;
@@ -9,37 +10,145 @@ using UnityEngine.Android;
 public class SerialWithArduino : MonoBehaviour
 {
     SerialPort _SerialPort;
+    System.Threading.Thread _SerialCommunicationThread;
     // Start is called before the first frame update
     void Start()
     {
+        
+
+        _SerialCommunicationThread = new System.Threading.Thread(SerialCommunicationThread);
+        _SerialCommunicationThread.Start();
+    }
+    int idx = 0;
+    void SerialCommunicationThread()
+    {
+        float rpmValueForTest = 0;
+        while (true)
+        {
+            //HDOBD2MainUI.UpdatePIDStatus("test", $"{idx++}");
+            if (_SerialPort != null)
+            {
+                try
+                {
+                    var res = _SerialPort.ReadLine();
+                    if (res.Length >= 8)
+                    {
+
+                        string header = res[0..8];
+                        if (header == "OBD2____")
+                        {
+                            var resSplit = res.Split(",");
+                            if(resSplit.Length >= 3)
+                            {
+                                string category = resSplit[1];
+                                string code = resSplit[2];
+                                string value = resSplit[3];
+                                HDOBD2MainUI.WriteOBDLog(category, code, value);
+                                switch (category)
+                                {
+                                    case "STATUS":
+                                        {
+                                            HDOBD2MainUI.PrintlnDetailDebugLabel($"status receive:{code}-{value}");
+                                            HDOBD2MainUI.UpdatePIDStatus(code, value);
+                                            break;
+                                        }
+                                    case "DTC":
+                                        {
+                                            HDOBD2MainUI.PrintlnDetailDebugLabel($"DTC receive:{code}-{value}");
+
+                                            HDOBD2MainUI.UpdateDTC(code);
+
+                                            break;
+                                        }
+                                }
+                            }
+                            else
+                            {
+                                HDOBD2MainUI.PrintlnDetailDebugLabel($"packet split by ',' result length < 3: {res}");
+
+                            }
+
+
+
+
+                        }
+                        else if (header == "packet__")
+                        {
+
+                        }
+                        else if (header == "order___")
+                        {
+                            var resSplit = res.Split(",");
+                            float angle = float.Parse(resSplit[1]);
+                            transform.rotation = Quaternion.Euler(0, angle * Time.deltaTime, 0) * transform.rotation;
+                        }
+                        else
+                        {
+                            HDOBD2MainUI.PrintlnDetailDebugLabel($"Non-interpretable Serial Message: {res}");
+                        }
+                    }
+                }
+                catch(Exception e)
+                {
+                    HDOBD2MainUI.PrintlnDetailDebugLabel($"Exeption occur while read Serial:{e.Message}");
+                }
+                
+            }
+            else
+            {
+                ConnectSerial();
+                HDOBD2MainUI.PrintlnDetailDebugLabel($"rpmValueForTest:{rpmValueForTest}");
+                HDOBD2MainUI.UpdatePIDStatus("RPM", $"{rpmValueForTest}");
+                HDOBD2MainUI.WriteSystemLog("log test", "title test", $"{rpmValueForTest}");
+                rpmValueForTest += 100;
+                if(rpmValueForTest > 5000)
+                {
+                    rpmValueForTest = 0;
+                }
+                System.Threading.Thread.Sleep(200);
+
+
+                //foreach (var portName in SerialPort.GetPortNames())
+                //{
+                //    HDOBD2MainUI.DebugLabel($"portName: {portName}");
+                //}
+            }
+            System.Threading.Thread.Sleep(1);
+        }
+
+
+    }
+
+    void ConnectSerial()
+    {
         string serialPortName = null;
 
-//#if UNITY_ANDROID
-//        foreach (var portName in SerialPort.GetPortNames())
-//        {
-//            Debug.Log($"portName: {portName}");
-//            if (portName.Contains("ttyACM"))
-//            {
-//                serialPortName = portName;
-//                break;
-//            }
-//        }
-//        HDOBD2MainUI.DebugLabel($"find port:{serialPortName}");
+        //#if UNITY_ANDROID
+        //        foreach (var portName in SerialPort.GetPortNames())
+        //        {
+        //            Debug.Log($"portName: {portName}");
+        //            if (portName.Contains("ttyACM"))
+        //            {
+        //                serialPortName = portName;
+        //                break;
+        //            }
+        //        }
+        //        HDOBD2MainUI.DebugLabel($"find port:{serialPortName}");
 
-//#elif UNITY_EDITOR
-//            serialPortName = "COM3";
+        //#elif UNITY_EDITOR
+        //            serialPortName = "COM3";
 
-//#else
-//            serialPortName = "COM3";
-//#endif
+        //#else
+        //            serialPortName = "COM3";
+        //#endif
 
         foreach (var portName in SerialPort.GetPortNames())
         {
             Debug.Log($"portName: {portName}");
 #if UNITY_EDITOR
-            if (portName.Contains("COM3"))
+            if (portName.Contains("COM4"))
 #else
-            if (portName.Contains("COM3"))
+            if (portName.Contains("COM4"))
 #endif
             {
                 serialPortName = portName;
@@ -77,7 +186,7 @@ public class SerialWithArduino : MonoBehaviour
                 HDOBD2MainUI.PrintlnDebugLabel($"port open");
 
             }
-            catch(System.Exception e)
+            catch (System.Exception e)
             {
                 HDOBD2MainUI.PrintlnDebugLabel($"exeption while open port:{e}");
             }
@@ -90,86 +199,10 @@ public class SerialWithArduino : MonoBehaviour
                 HDOBD2MainUI.PrintlnDebugLabel($"portName: {portName}");
             }
         }
-
-        System.Threading.Thread serialCommunicationThread = new System.Threading.Thread(SerialCommunicationThread);
-        serialCommunicationThread.Start();
     }
-    int idx = 0;
-    void SerialCommunicationThread()
+
+    private void OnDestroy()
     {
-        while (true)
-        {
-            HDOBD2MainUI.UpdatePIDStatus("test", $"{idx++}");
-            if (_SerialPort != null)
-            {
-                var res = _SerialPort.ReadLine();
-                if (res.Length >= 8)
-                {
-
-                    string header = res[0..8];
-                    if (header == "OBD2____")
-                    {
-                        var resSplit = res.Split(",");
-                        string category = resSplit[1];
-                        string code = resSplit[2];
-                        string value = resSplit[3];
-                        switch (category)
-                        {
-                            case "STATUS":
-                                {
-                                    HDOBD2MainUI.UpdatePIDStatus(code, value);
-                                    //switch (pidName)
-                                    //{
-                                    //    case "RPM":
-                                    //        {
-
-                                    //            break;
-                                    //        }
-                                    //    case "COOLANT_TEMP":
-                                    //        {
-
-                                    //            break;
-                                    //        }
-                                    //}
-                                    break;
-                                }
-                            case "DTC":
-                                {
-                                    HDOBD2MainUI.UpdateDTC(code);
-
-                                    break;
-                                }
-                        }
-
-
-
-                    }
-                    else if (header == "packet__")
-                    {
-
-                    }
-                    else if (header == "order___")
-                    {
-                        var resSplit = res.Split(",");
-                        float angle = float.Parse(resSplit[1]);
-                        transform.rotation = Quaternion.Euler(0, angle * Time.deltaTime, 0) * transform.rotation;
-                    }
-                    else
-                    {
-                        HDOBD2MainUI.PrintlnDebugLabel($"{_SerialPort.PortName}: {res}");
-                    }
-                }
-            }
-            else
-            {
-                //foreach (var portName in SerialPort.GetPortNames())
-                //{
-                //    HDOBD2MainUI.DebugLabel($"portName: {portName}");
-                //}
-            }
-            System.Threading.Thread.Sleep(100);
-        }
-
-
+        _SerialCommunicationThread?.Abort();
     }
 }
