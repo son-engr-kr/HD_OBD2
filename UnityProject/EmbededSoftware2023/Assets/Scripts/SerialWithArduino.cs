@@ -144,7 +144,7 @@ public class SerialWithArduino : MonoBehaviour
 
         foreach (var portName in SerialPort.GetPortNames())
         {
-            Debug.Log($"portName: {portName}");
+            //Debug.Log($"portName: {portName}");
 #if UNITY_EDITOR
             if (portName.Contains("COM4"))
 #else
