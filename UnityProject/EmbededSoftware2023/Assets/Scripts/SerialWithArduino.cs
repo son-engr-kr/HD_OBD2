@@ -97,7 +97,7 @@ public class SerialWithArduino : MonoBehaviour
             else
             {
                 ConnectSerial();
-                HDOBD2MainUI.PrintlnDetailDebugLabel($"rpmValueForTest:{rpmValueForTest}");
+                //HDOBD2MainUI.PrintlnDetailDebugLabel($"rpmValueForTest:{rpmValueForTest}");
                 HDOBD2MainUI.UpdatePIDStatus("RPM", $"{rpmValueForTest}");
                 HDOBD2MainUI.WriteSystemLog("log test", "title test", $"{rpmValueForTest}");
                 rpmValueForTest += 100;
