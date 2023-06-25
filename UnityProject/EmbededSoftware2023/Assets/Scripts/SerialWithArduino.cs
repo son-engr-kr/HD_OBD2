@@ -155,7 +155,7 @@ public class SerialWithArduino : MonoBehaviour
                 break;
             }
         }
-        HDOBD2MainUI.PrintlnDebugLabel($"find port:{serialPortName}");
+        //HDOBD2MainUI.PrintlnDebugLabel($"find port:{serialPortName}");
 
         //_SerialPort = new SerialPort(SerialPort.GetPortNames().Last(), 9600);
         if (serialPortName != null)
@@ -196,7 +196,7 @@ public class SerialWithArduino : MonoBehaviour
         {
             foreach (var portName in SerialPort.GetPortNames())
             {
-                HDOBD2MainUI.PrintlnDebugLabel($"portName: {portName}");
+                //HDOBD2MainUI.PrintlnDebugLabel($"portName: {portName}");
             }
         }
     }
