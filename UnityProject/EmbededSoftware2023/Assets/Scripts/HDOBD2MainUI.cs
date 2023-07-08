@@ -179,7 +179,7 @@ public class HDOBD2MainUI : MonoBehaviour
         _DTCScrollView.Clear();
 
 
-        _Cluster = root.Q<VisualElement>("Cluster");
+        _Cluster = root.Q<VisualElement>("ClusterFrame");
         //_CustomControlTest = _Cluster.Q<CircularGaugeCustomControl>("circular-gauge");
         _RPMGaugeCustomControl = _Cluster.Q<CircularGaugeCustomControl>("RpmGauge");
         _LabelRpm = _Cluster.Q<Label>("RpmLabel");
@@ -537,6 +537,7 @@ public class HDOBD2MainUI : MonoBehaviour
                                 _instance._RPMGaugeCustomControl.IsBlink = false;
 
                             }
+                            VirtualEngineSound.EngineSoundWithRPM(rpm,4);
                         }
                         catch
                         {

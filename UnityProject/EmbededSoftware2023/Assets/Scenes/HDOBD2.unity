@@ -208,7 +208,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 121457550}
-  m_LocalRotation: {x: 0.22696778, y: -0.66969067, z: 0.22696774, w: 0.6696908}
+  m_LocalRotation: {x: 0.22696775, y: -0.6696907, z: 0.22696777, w: 0.6696907}
   m_LocalPosition: {x: 7.6, y: 5.58, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -668,6 +668,113 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 659402587}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &691928073
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 691928074}
+  - component: {fileID: 691928075}
+  m_Layer: 0
+  m_Name: ObjectForTest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &691928074
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 691928073}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.32141757, y: -0.90283394, z: 1.8428025}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &691928075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 691928073}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05e4bff806cdb754c97b95e72c9e22f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  freqChannels:
+  - dstFrequency: 0
+    prevFrequency: 0
+    frequency: 0
+    phase: 0
+    prevValue: 0
+    Amplitude: 1
+  - dstFrequency: 0
+    prevFrequency: 0
+    frequency: 0
+    phase: 0
+    prevValue: 0
+    Amplitude: 1
+  - dstFrequency: 0
+    prevFrequency: 0
+    frequency: 0
+    phase: 0
+    prevValue: 0
+    Amplitude: 1
+  - dstFrequency: 0
+    prevFrequency: 0
+    frequency: 0
+    phase: 0
+    prevValue: 0
+    Amplitude: 1
+  - dstFrequency: 0
+    prevFrequency: 0
+    frequency: 0
+    phase: 0
+    prevValue: 0
+    Amplitude: 1
+  - dstFrequency: 0
+    prevFrequency: 0
+    frequency: 0
+    phase: 0
+    prevValue: 0
+    Amplitude: 1
+  - dstFrequency: 0
+    prevFrequency: 0
+    frequency: 0
+    phase: 0
+    prevValue: 0
+    Amplitude: 1
+  - dstFrequency: 0
+    prevFrequency: 0
+    frequency: 0
+    phase: 0
+    prevValue: 0
+    Amplitude: 1
+  - dstFrequency: 0
+    prevFrequency: 0
+    frequency: 0
+    phase: 0
+    prevValue: 0
+    Amplitude: 1
+  - dstFrequency: 0
+    prevFrequency: 0
+    frequency: 0
+    phase: 0
+    prevValue: 0
+    Amplitude: 1
+  sampleRate: 44100
+  waveLengthInSeconds: 2
 --- !u!1 &868126960
 GameObject:
   m_ObjectHideFlags: 0
@@ -837,7 +944,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 951125108}
-  m_LocalRotation: {x: 0.22696778, y: -0.66969067, z: 0.22696774, w: 0.6696908}
+  m_LocalRotation: {x: 0.22696775, y: -0.6696907, z: 0.22696777, w: 0.6696907}
   m_LocalPosition: {x: 7.6, y: 5.58, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1333,6 +1440,7 @@ GameObject:
   - component: {fileID: 1437081012}
   - component: {fileID: 1437081014}
   - component: {fileID: 1437081013}
+  - component: {fileID: 1437081015}
   m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
@@ -1431,6 +1539,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88a001cf1373db341bab884b862fdc76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1437081015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1437081007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf993245f1328524b935dfe3ab2c2cf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  freqChannels:
+  - dstFrequency: 0
+    prevFrequency: 0
+    frequency: 0
+    phase: 0
+    prevValue: 0
+    Amplitude: 1
+  - dstFrequency: 0
+    prevFrequency: 0
+    frequency: 0
+    phase: 0
+    prevValue: 0
+    Amplitude: 1
+  - dstFrequency: 0
+    prevFrequency: 0
+    frequency: 0
+    phase: 0
+    prevValue: 0
+    Amplitude: 1
+  - dstFrequency: 0
+    prevFrequency: 0
+    frequency: 0
+    phase: 0
+    prevValue: 0
+    Amplitude: 1
+  - dstFrequency: 0
+    prevFrequency: 0
+    frequency: 0
+    phase: 0
+    prevValue: 0
+    Amplitude: 1
+  - dstFrequency: 0
+    prevFrequency: 0
+    frequency: 0
+    phase: 0
+    prevValue: 0
+    Amplitude: 1
+  - dstFrequency: 0
+    prevFrequency: 0
+    frequency: 0
+    phase: 0
+    prevValue: 0
+    Amplitude: 1
+  - dstFrequency: 0
+    prevFrequency: 0
+    frequency: 0
+    phase: 0
+    prevValue: 0
+    Amplitude: 1
+  - dstFrequency: 0
+    prevFrequency: 0
+    frequency: 0
+    phase: 0
+    prevValue: 0
+    Amplitude: 1
+  - dstFrequency: 0
+    prevFrequency: 0
+    frequency: 0
+    phase: 0
+    prevValue: 0
+    Amplitude: 1
+  sampleRate: 44100
 --- !u!4 &1468893860 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9972a2fcdf7680142b62ea837c185fff, type: 3}

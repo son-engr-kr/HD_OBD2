@@ -177,13 +177,15 @@
 }
 
 .Cluster {
+    width: 1820px;
+    height: 100%;
+    position: absolute;
+    left: 100px;
+    display: flex;
     visibility: visible;
-    transition-duration: 0.3s;
-    transition-timing-function: linear;
 }
 
 .Cluster--Hide {
-    visibility: hidden;
-    transition-duration: 0.3s;
-    transition-timing-function: linear;
+    visibility: visible;
+    display: none;
 }
