@@ -242,7 +242,7 @@ public class HDOBD2MainUI : MonoBehaviour
     {
         _instance.Invoke(() =>
         {
-            var nowString = DateTime.Now.ToString("HH:mm:ss_FFF");
+            var nowString = DateTime.Now.ToString("HH:mm:ss_fff");
 
             while (_instance._detailDebugStrings.Count >= 200)
             {

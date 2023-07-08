@@ -11,6 +11,7 @@ public class TCPIPTest : MonoBehaviour
     static TCPIPTest _Instance;
     string ServerIP;
     int Port;
+    Thread tcpClientThread;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,12 +35,19 @@ public class TCPIPTest : MonoBehaviour
     }
     void StartTCPIPThread()
     {
-        Thread thread = new Thread(new ThreadStart(TCPIP));
-        thread.Start();
+        tcpClientThread = new Thread(new ThreadStart(TCPIP));
+        tcpClientThread.Start();
+    }
+    bool ThreadStopFlag = false;
+    private void OnApplicationQuit()
+    {
+        ThreadStopFlag = true;
+        tcpClientThread?.Join();
+        //tcpClientThread?.Abort();
     }
     void TCPIP()
     {
-        while (true)
+        while (!ThreadStopFlag)
         {
             TcpClient socket = new TcpClient();
             HDOBD2MainUI.PrintlnDetailDebugLabel($"tcpip BeginConnect:{ServerIP},{Port}");
@@ -56,25 +64,46 @@ public class TCPIPTest : MonoBehaviour
                     socket.Close();
                     throw new TimeoutException();
                 }
+                HDOBD2MainUI.PrintlnDetailDebugLabel($"tcpip connected to server");
 
                 socket.EndConnect(ar);
                 NetworkStream stream = socket.GetStream();
-                while (true)
+                stream.Write(Encoding.UTF8.GetBytes("Im client"));
+                int idx = 0;
+                while (!ThreadStopFlag)
                 {
-
+                    idx++;
                     //if (stream.CanWrite)
                     //{
                     //    stream.Write(buffer, 0, buffer.Length);
                     //}
+                    if (stream.CanWrite && idx % 100 == 0)
+                    {
+                        UTF8Encoding encoding = new UTF8Encoding();
+                        //HDOBD2MainUI.PrintlnDetailDebugLabel($"tcpip send");
+                        stream.Write(Encoding.UTF8.GetBytes("Im client"));
+
+
+                        Thread.Sleep(1000);
+
+                    }
                     if (stream.DataAvailable && stream.CanRead)
                     {
-                        Byte[] buffer = new Byte[5];
+                        Byte[] buffer = new Byte[4];
 
                         stream.Read(buffer, 0, buffer.Length);
-                        UTF8Encoding encoding = new UTF8Encoding();
-                        HDOBD2MainUI.PrintlnDetailDebugLabel($"tcpip client:{encoding.GetString(buffer)}");
+                        //UTF8Encoding encoding = new UTF8Encoding();
+                        //HDOBD2MainUI.PrintlnDetailDebugLabel($"tcpip receive from client :{Encoding.UTF8.GetString(buffer)}");
+                        int bodySize = BitConverter.ToInt32(buffer, 0);
+                        HDOBD2MainUI.PrintlnDetailDebugLabel($"tcpip receive from client : bodySize: {bodySize}");
+                        if(bodySize != 1234567)
+                        {
+                            HDOBD2MainUI.PrintlnDetailDebugLabel($"tcpip receive from client : {Encoding.UTF8.GetString(buffer)}");
+                        }
                     }
+                    Thread.Sleep(1);
                 }
+                socket.Close();
             }
             catch (Exception ex)
             {
@@ -87,7 +116,7 @@ public class TCPIPTest : MonoBehaviour
             {
                 wh.Close();
             }
-            Thread.Sleep(300);
+            Thread.Sleep(5000);
         }
     }
 }

@@ -11,8 +11,8 @@
         </ui:ScrollView>
         <ui:Button text="Capture" display-tooltip-when-elided="true" name="ButtonCaptureDebugDetail" style="position: absolute; top: 33px; left: auto; right: 0; border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; border-top-left-radius: 8px; border-bottom-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; width: 195px; height: 106px; font-size: 29px; -unity-font-style: bold;" />
         <ui:ScrollView style="top: 60%; height: 40%; position: absolute; width: 50%;">
-            <ui:TextField picking-mode="Ignore" label="ServerIP" value="127.0.0.1" max-length="15" name="TextFieldServerIP" />
-            <ui:IntegerField label="Port" value="3333" name="IntegerFieldServerPort" />
+            <ui:TextField picking-mode="Ignore" label="ServerIP" value="192.168.40.241" max-length="15" name="TextFieldServerIP" />
+            <ui:IntegerField label="Port" value="400" name="IntegerFieldServerPort" />
             <ui:Button text="start tcpip" display-tooltip-when-elided="true" name="ButtonStartTCPIP" />
         </ui:ScrollView>
     </ui:VisualElement>
