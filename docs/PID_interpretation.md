@@ -1,6 +1,3 @@
- ## float형
- - PID_ENGINE_LOAD
-
  ## 활용할 만한 자료들
 - AUX 상태 확인가능
 - Distance with MIL : MIL이 켜진 상태로의 주행 거리(MIL : Malfunction Indicator Lamp) 
