@@ -21,5 +21,6 @@ OBD2 Frame 에는 mode를 선택하는 바이트가 있다.현재 우리가 rpm�
 
 다음 상위 2bit가 (00이면 SAE),(01이면 생산업체)
 
-남은 12bit는 4bit씩 코드 하나를 차지한다.
+남은 12bit는 4bit씩 코드 하나를 차지한다.<br>
+
 ![img](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Ftistoryfile%2Ffs8%2F16_tistory_2008_08_20_09_01_48ab5ecf14823%3Foriginal)
