@@ -149,7 +149,6 @@ Service 03 - Show stored Diagnostic Trouble Codes (DTCs)
 <br><br>
 # 우리의 라즈베리파이는?
 - 현재 소유 중: 라즈베리파이4 B 4GB
-- 8GB가 필요할 수도..
 <details>
   <summary>
     Raspberry Pi 4 GPIO Pinout
